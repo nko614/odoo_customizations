@@ -113,25 +113,11 @@ class DisassemblyWizard(models.TransientModel):
         if not production_location:
             raise UserError(_('No virtual production location found for this company.'))
 
-        # Use receipt picking type (incoming) since we're adding parts to stock
-        warehouse = self.env['stock.warehouse'].search([
-            ('company_id', '=', self.env.company.id),
-        ], limit=1)
-        picking_type = warehouse.in_type_id if warehouse else False
-        if not picking_type:
-            raise UserError(_('No receipt operation type found for this warehouse.'))
-
-        picking = self.env['stock.picking'].create({
-            'picking_type_id': picking_type.id,
-            'location_id': production_location.id,
-            'location_dest_id': self.location_dest_id.id,
-            'origin': _('Disassembly - %s') % self.product_id.display_name,
-        })
-
-        # Create a stock move for each selected component
+        # Create stock moves directly (no picking needed)
+        moves = self.env['stock.move']
         for line in selected_lines:
             qty = line.product_qty * self.product_qty
-            self.env['stock.move'].create({
+            moves |= self.env['stock.move'].create({
                 'name': _('Disassembly: %s from %s') % (
                     line.product_id.display_name,
                     self.product_id.display_name,
@@ -141,18 +127,28 @@ class DisassemblyWizard(models.TransientModel):
                 'product_uom': line.product_uom_id.id,
                 'location_id': production_location.id,
                 'location_dest_id': self.location_dest_id.id,
-                'picking_id': picking.id,
             })
 
-        picking.action_confirm()
+        moves._action_confirm()
+        moves._action_assign()
+        moves.move_line_ids.write({'quantity': moves.move_line_ids.mapped('quantity') or 0})
+        for move in moves:
+            for move_line in move.move_line_ids:
+                move_line.quantity = move.product_uom_qty
+        moves._action_done()
 
         return {
-            'name': _('Partial Disassembly'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking',
-            'res_id': picking.id,
-            'view_mode': 'form',
-            'target': 'current',
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Disassembly Complete'),
+                'message': _('%d component(s) moved to %s') % (
+                    len(selected_lines),
+                    self.location_dest_id.display_name,
+                ),
+                'type': 'success',
+                'next': {'type': 'ir.actions.act_window_close'},
+            },
         }
 
 
