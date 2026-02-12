@@ -127,9 +127,21 @@ class DisassemblyWizard(models.TransientModel):
 
         moves._action_confirm()
         moves._action_assign()
+        # For virtual production locations, move lines may not be created
+        # by _action_assign. Create them manually if missing.
         for move in moves:
-            for move_line in move.move_line_ids:
-                move_line.quantity = move.product_uom_qty
+            if not move.move_line_ids:
+                self.env['stock.move.line'].create({
+                    'move_id': move.id,
+                    'product_id': move.product_id.id,
+                    'product_uom_id': move.product_uom.id,
+                    'location_id': move.location_id.id,
+                    'location_dest_id': move.location_dest_id.id,
+                    'quantity': move.product_uom_qty,
+                })
+            else:
+                for move_line in move.move_line_ids:
+                    move_line.quantity = move.product_uom_qty
         moves._action_done()
 
         return {
