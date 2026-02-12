@@ -127,7 +127,6 @@ class DisassemblyWizard(models.TransientModel):
 
         moves._action_confirm()
         moves._action_assign()
-        moves.move_line_ids.write({'quantity': moves.move_line_ids.mapped('quantity') or 0})
         for move in moves:
             for move_line in move.move_line_ids:
                 move_line.quantity = move.product_uom_qty
