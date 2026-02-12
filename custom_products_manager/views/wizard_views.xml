@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Custom Product Creator Wizard Form View -->
+        <record id="view_custom_product_creator_form" model="ir.ui.view">
+            <field name="name">custom.product.creator.form</field>
+            <field name="model">custom.product.creator</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Create Custom Product</h1>
+                        </div>
+
+                        <group>
+                            <group string="Basic Information">
+                                <field name="product_name" placeholder="Enter product name..."/>
+                                <field name="product_code" placeholder="Auto-generated if empty"/>
+                                <field name="template_id" placeholder="Select a template..."/>
+                                <field name="category_id"/>
+                            </group>
+                            <group string="Pricing &amp; Units">
+                                <field name="list_price"/>
+                                <field name="cost_price"/>
+                                <field name="uom_id"/>
+                                <field name="uom_po_id"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Product Type">
+                                <field name="detailed_type"/>
+                                <field name="tracking" invisible="detailed_type != 'product'"/>
+                            </group>
+                            <group string="Manufacturing">
+                                <field name="create_bom" invisible="detailed_type != 'product'"/>
+                                <field name="bom_type" invisible="detailed_type != 'product' or create_bom == False"/>
+                            </group>
+                        </group>
+
+                        <group string="Sales Information" invisible="sale_order_id == False">
+                            <group>
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="quantity"/>
+                                <field name="sale_line_id" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description" name="description">
+                                <field name="description" placeholder="Enter product description..."/>
+                            </page>
+                            <page string="Custom Configuration" name="custom_config">
+                                <field name="custom_fields" widget="ace" options="{'mode': 'json'}" 
+                                       placeholder='{"field_name": "field_value"}'/>
+                            </page>
+                            <page string="Options" name="options">
+                                <group>
+                                    <group>
+                                        <field name="can_be_sold"/>
+                                        <field name="can_be_purchased"/>
+                                    </group>
+                                    <group>
+                                        <field name="is_storable" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group string="Product Image">
+                                    <field name="image_1920" widget="image" options="{'size': [300, 300]}"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_create_product" type="object" string="Create Product" class="btn-primary"/>
+                        <button name="action_create_and_continue" type="object" string="Create &amp; Edit" class="btn-secondary"/>
+                        <button name="action_preview_product" type="object" string="Preview" class="btn-secondary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- BOM Builder Wizard Form View -->
+        <record id="view_bom_builder_form" model="ir.ui.view">
+            <field name="name">bom.builder.wizard.form</field>
+            <field name="model">bom.builder.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Build Bill of Materials</h1>
+                            <h2>
+                                <field name="product_tmpl_id" readonly="1"/>
+                                <field name="product_id" invisible="1"/>
+                            </h2>
+                        </div>
+
+                        <div class="alert alert-info" invisible="just_created == False">
+                            <strong>BOM Created!</strong> Now add components to complete your bill of materials.
+                        </div>
+
+                        <group>
+                            <group string="Search &amp; Add Components">
+                                <field name="search_product" placeholder="Search products by name, code, or barcode..."/>
+                                <field name="search_results" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
+                                       invisible="not search_results"
+                                       context="{'product_search_mode': True}"/>
+                            </group>
+                            <group string="BOM Totals">
+                                <field name="total_cost" readonly="1"/>
+                                <field name="total_weight" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Popular Components" invisible="not popular_components">
+                            <field name="popular_components" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+
+                        <group string="Components">
+                            <field name="component_lines" nolabel="1">
+                                <list editable="bottom" decoration-muted="product_qty == 0">
+                                    <control>
+                                        <create string="Add Component"/>
+                                    </control>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" options="{'no_create': True}"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id" options="{'no_create': True}"/>
+                                    <field name="component_type"/>
+                                    <field name="unit_cost" readonly="1"/>
+                                    <field name="total_cost" readonly="1"/>
+                                    <field name="is_optional"/>
+                                    <field name="supplier_id" options="{'no_create': True}"/>
+                                </list>
+                            </field>
+                        </group>
+
+                        <div class="oe_clear"/>
+                    </sheet>
+                    <footer>
+                        <button name="action_save_and_close" type="object" string="Save &amp; Close" class="btn-primary"/>
+                        <button name="action_save_and_view_bom" type="object" string="Save &amp; View BOM" class="btn-secondary"/>
+                        <button name="action_import_from_template" type="object" string="Import from Template" class="btn-secondary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- BOM Template Selector (for import from template functionality) -->
+        <record id="view_bom_template_selector" model="ir.ui.view">
+            <field name="name">bom.template.selector.form</field>
+            <field name="model">bom.template.selector</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Select BOM Template</h1>
+                        </div>
+
+                        <group>
+                            <field name="wizard_id" invisible="1"/>
+                            <field name="product_category_id" invisible="1"/>
+                            <field name="template_bom_id" domain="[('template_bom_id', '=', False)]"/>
+                            <field name="include_optional_components"/>
+                        </group>
+
+                        <group string="Template Preview" invisible="template_bom_id == False">
+                            <field name="template_components" readonly="1">
+                                <list>
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="component_type"/>
+                                </list>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_import_template" type="object" string="Import Template" class="btn-primary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

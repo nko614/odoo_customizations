@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Add Margin % to sale order form (line list + line form)       -->
+    <!-- ============================================================ -->
+    <record id="view_order_form_margin_percent" model="ir.ui.view">
+        <field name="name">sale.order.form.bafe.margin</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+        <field name="arch" type="xml">
+            <!-- Add to order line list view (after purchase_price) -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='purchase_price']" position="after">
+                <field name="target_margin_percent" string="Margin %" optional="show"/>
+            </xpath>
+            <!-- Add to order line inline form (after purchase_price) -->
+            <xpath expr="//field[@name='order_line']//form//field[@name='purchase_price']" position="after">
+                <field name="target_margin_percent" string="Margin %"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Standalone list view: Margin Review                          -->
+    <!-- ============================================================ -->
+    <record id="view_sale_order_line_margin_list" model="ir.ui.view">
+        <field name="name">sale.order.line.margin.review.list</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <list string="Margin Review" editable="bottom">
+                <field name="order_id" string="Order" readonly="1"/>
+                <field name="order_partner_id" string="Customer" readonly="1"/>
+                <field name="product_id" string="Product" readonly="1"/>
+                <field name="product_uom_qty" string="Qty" readonly="1"/>
+                <field name="purchase_price" string="Cost"/>
+                <field name="target_margin_percent" string="Margin %"/>
+                <field name="price_unit" string="Unit Price"/>
+                <field name="discount" string="Disc.%" readonly="1" optional="hide"/>
+                <field name="price_subtotal" string="Subtotal" readonly="1"/>
+                <field name="margin" string="Margin $" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Search view for Margin Review                                -->
+    <!-- ============================================================ -->
+    <record id="view_sale_order_line_margin_search" model="ir.ui.view">
+        <field name="name">sale.order.line.margin.review.search</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Margin Review">
+                <field name="order_id" string="Order"/>
+                <field name="order_partner_id" string="Customer"/>
+                <field name="product_id" string="Product"/>
+                <separator/>
+                <filter name="filter_negative_margin" string="Negative Margin"
+                    domain="[('margin', '&lt;', 0)]"/>
+                <separator/>
+                <group>
+                    <filter name="group_customer" string="Customer"
+                        context="{'group_by': 'order_partner_id'}"/>
+                    <filter name="group_product" string="Product"
+                        context="{'group_by': 'product_id'}"/>
+                    <filter name="group_order" string="Order"
+                        context="{'group_by': 'order_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action: Margin Review                                        -->
+    <!-- ============================================================ -->
+    <record id="action_margin_review" model="ir.actions.act_window">
+        <field name="name">Margin Review</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('order_id.state', 'in', ('sale', 'done'))]</field>
+        <field name="view_id" ref="view_sale_order_line_margin_list"/>
+        <field name="search_view_id" ref="view_sale_order_line_margin_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No confirmed sale order lines found
+            </p>
+            <p>
+                Review and adjust margins across all confirmed sales orders.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Menu: Sales → Margin Review                                  -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_margin_review_parent"
+              name="Margin Review"
+              parent="sale.sale_order_menu"
+              action="action_margin_review"
+              groups="sales_team.group_sale_salesman"
+              sequence="25"/>
+
+</odoo>

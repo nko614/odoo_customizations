@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view for capturing start weight -->
+    <record id="view_workorder_start_weight_form" model="ir.ui.view">
+        <field name="name">mrp.workorder.start.weight.form</field>
+        <field name="model">mrp.workorder</field>
+        <field name="arch" type="xml">
+            <form string="Enter Starting Paint Weight" class="o_tablet_popup">
+                <div class="alert alert-info">
+                    <h4>📏 Enter Starting Paint Weight</h4>
+                    <p>Weigh the paint container before starting work.</p>
+                </div>
+                <group>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="product_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="paint_product_id" readonly="1" string="Paint Product (from BOM)"/>
+                        <label for="start_weight" string="Starting Paint Weight" class="fw-bold"/>
+                        <div class="o_row">
+                            <field name="start_weight" class="oe_inline" style="font-size: 18px; width: 120px;"/>
+                            <field name="weight_uom_id" class="oe_inline" options="{'no_open': True, 'no_create': True}"/>
+                        </div>
+                    </group>
+                </group>
+                <footer>
+                    <button name="confirm_start_weight" string="✅ Confirm Start Weight" type="object" class="btn-primary btn-lg"/>
+                    <button string="Cancel" class="btn-secondary btn-lg" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Form view for capturing end weight -->
+    <record id="view_workorder_end_weight_form" model="ir.ui.view">
+        <field name="name">mrp.workorder.end.weight.form</field>
+        <field name="model">mrp.workorder</field>
+        <field name="arch" type="xml">
+            <form string="Enter Remaining Paint Weight" class="o_tablet_popup">
+                <div class="alert alert-warning">
+                    <h4>📏 Enter Remaining Paint Weight</h4>
+                    <p>Weigh the paint container after completing work.</p>
+                </div>
+                <group>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="product_id" readonly="1"/>
+                        <field name="paint_product_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <label for="start_weight" string="Started With"/>
+                        <div class="o_row">
+                            <field name="start_weight" readonly="1" class="oe_inline fw-bold text-success" style="font-size: 16px;"/>
+                            <field name="weight_uom_id" readonly="1" class="oe_inline" options="{'no_open': True}"/>
+                        </div>
+                        <label for="end_weight" string="Remaining Paint Weight" class="fw-bold"/>
+                        <div class="o_row">
+                            <field name="end_weight" class="oe_inline" style="font-size: 18px; width: 120px;"/>
+                            <field name="weight_uom_id" readonly="1" class="oe_inline" options="{'no_open': True}"/>
+                        </div>
+                        <label for="delta_weight" string="Paint Used" class="fw-bold text-danger"/>
+                        <div class="o_row">
+                            <field name="delta_weight" readonly="1" class="oe_inline fw-bold text-danger" style="font-size: 18px;"/>
+                            <field name="weight_uom_id" readonly="1" class="oe_inline" options="{'no_open': True}"/>
+                        </div>
+                    </group>
+                </group>
+                <footer>
+                    <button name="confirm_end_weight" string="✅ Confirm End Weight &amp; Update Inventory" type="object" class="btn-primary btn-lg"/>
+                    <button string="Cancel" class="btn-secondary btn-lg" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

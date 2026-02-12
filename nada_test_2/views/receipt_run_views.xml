@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Sequence                                                      -->
+    <!-- ============================================================ -->
+    <record id="seq_nada_receipt_run" model="ir.sequence">
+        <field name="name">Receipt Automation Run</field>
+        <field name="code">nada.receipt.run</field>
+        <field name="prefix">RUN/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Form view                                                     -->
+    <!-- ============================================================ -->
+    <record id="nada_receipt_run_view_form" model="ir.ui.view">
+        <field name="name">nada.receipt.run.form</field>
+        <field name="model">nada.receipt.run</field>
+        <field name="arch" type="xml">
+            <form string="Receipt Automation Run">
+                <header>
+                    <button name="action_process"
+                            string="Process &amp; Match"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_generate_pos"
+                            string="Generate POs"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'processed'"/>
+                    <button name="action_send_pos"
+                            string="Send to Vendors"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'pos_created'"
+                            confirm="This will confirm all POs and email them to vendors. Continue?"/>
+                    <button name="action_done"
+                            string="Mark Done"
+                            type="object"
+                            invisible="state != 'sent'"/>
+                    <button name="action_process"
+                            string="Re-Process"
+                            type="object"
+                            invisible="state != 'processed'"
+                            class="btn-secondary"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,processed,pos_created,sent,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pos"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart"
+                                invisible="po_count == 0">
+                            <field name="po_count" widget="statinfo" string="Purchase Orders"/>
+                        </button>
+                        <button name="action_view_exceptions"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-exclamation-triangle"
+                                invisible="exception_count == 0">
+                            <field name="exception_count" widget="statinfo" string="Exceptions"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="user_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+
+                    <!-- Editable lines in draft -->
+                    <field name="line_ids"
+                           readonly="state not in ('draft', 'processed')">
+                        <list string="Products" editable="bottom">
+                            <field name="sequence" column_invisible="1"/>
+                            <field name="product_id"
+                                   readonly="parent.state != 'draft'"/>
+                            <field name="forecasted_qty" string="Forecasted Sales"
+                                   readonly="parent.state != 'draft'"/>
+                            <field name="on_hand_qty" string="On Hand"/>
+                            <field name="needed_qty" string="Needed"/>
+                            <field name="allocated_qty" string="Allocated"
+                                   column_invisible="parent.state == 'draft'"/>
+                            <field name="vendor_id"
+                                   column_invisible="parent.state == 'draft'"/>
+                            <field name="price_unit" string="Price"
+                                   column_invisible="parent.state == 'draft'"/>
+                            <field name="blanket_order_id" string="Blanket Order"
+                                   column_invisible="parent.state == 'draft'"
+                                   optional="hide"/>
+                            <field name="status" widget="badge"
+                                   column_invisible="parent.state == 'draft'"
+                                   decoration-success="status == 'matched'"
+                                   decoration-warning="status == 'partial'"
+                                   decoration-danger="status == 'no_blanket'"/>
+                            <field name="note" column_invisible="parent.state == 'draft'"
+                                   optional="hide"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- List view                                                     -->
+    <!-- ============================================================ -->
+    <record id="nada_receipt_run_view_list" model="ir.ui.view">
+        <field name="name">nada.receipt.run.list</field>
+        <field name="model">nada.receipt.run</field>
+        <field name="arch" type="xml">
+            <list string="Receipt Automation Runs">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="matched_count" string="Matched"/>
+                <field name="exception_count" string="Exceptions"/>
+                <field name="po_count" string="POs"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'processed'"
+                       decoration-success="state in ('sent', 'done')"
+                       decoration-primary="state == 'pos_created'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Search view                                                   -->
+    <!-- ============================================================ -->
+    <record id="nada_receipt_run_view_search" model="ir.ui.view">
+        <field name="name">nada.receipt.run.search</field>
+        <field name="model">nada.receipt.run</field>
+        <field name="arch" type="xml">
+            <search string="Receipt Automation">
+                <field name="name"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter name="filter_draft" string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_processed" string="Processed"
+                        domain="[('state', '=', 'processed')]"/>
+                <filter name="filter_sent" string="Sent"
+                        domain="[('state', '=', 'sent')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_date" string="Date"
+                            context="{'group_by': 'date:month'}"/>
+                    <filter name="group_user" string="Responsible"
+                            context="{'group_by': 'user_id'}"/>
+                    <filter name="group_state" string="Status"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action                                                        -->
+    <!-- ============================================================ -->
+    <record id="action_nada_receipt_run" model="ir.actions.act_window">
+        <field name="name">Automating Receipts</field>
+        <field name="res_model">nada.receipt.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="nada_receipt_run_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first automated receipt run
+            </p>
+            <p>
+                Select products and enter forecasted sales to automatically
+                generate purchase orders from blanket orders.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Menu under Purchase                                           -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_nada_receipt_root"
+              name="Automating Receipts"
+              parent="purchase.menu_purchase_root"
+              sequence="25"/>
+
+    <menuitem id="menu_nada_receipt_runs"
+              name="All Runs"
+              parent="menu_nada_receipt_root"
+              action="action_nada_receipt_run"
+              sequence="10"/>
+
+</odoo>

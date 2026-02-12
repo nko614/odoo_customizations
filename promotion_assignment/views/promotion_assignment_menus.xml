@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_promotion_root"
+              name="Promotions"
+              parent="sale.sale_menu_root"
+              sequence="25"/>
+
+    <menuitem id="menu_promotion_assignments"
+              name="Promotion Assignments"
+              parent="menu_promotion_root"
+              action="promotion_assignment_action"
+              sequence="10"/>
+
+</odoo>

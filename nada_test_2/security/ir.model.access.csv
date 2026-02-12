@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nada_receipt_run,nada.receipt.run,model_nada_receipt_run,purchase.group_purchase_user,1,1,1,1
+access_nada_receipt_line,nada.receipt.line,model_nada_receipt_line,purchase.group_purchase_user,1,1,1,1

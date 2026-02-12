@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    
+    <t t-name="custom_products_manager.CustomProductWidget">
+        <div class="custom-product-search-widget">
+            <div class="form-group">
+                <input type="text" 
+                       class="form-control" 
+                       placeholder="Search products by name, code, or barcode..." 
+                       t-ref="searchInput"
+                       t-on-input="onSearchInput"/>
+            </div>
+            <div id="search_results" class="list-group mt-2" style="max-height: 300px; overflow-y: auto;">
+                <!-- Search results will be populated here -->
+            </div>
+            <div class="mt-3" t-if="props.record.data.popular_components and props.record.data.popular_components.length">
+                <h6>Popular Components:</h6>
+                <div class="d-flex flex-wrap">
+                    <t t-foreach="props.record.data.popular_components" t-as="component" t-key="component.id">
+                        <button class="btn btn-outline-secondary btn-sm m-1" 
+                                t-att-data-product-id="component.id"
+                                t-on-click="onQuickAdd">
+                            <t t-esc="component.name"/>
+                        </button>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="custom_products_manager.ProductPreview">
+        <div class="product-preview-widget">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Product Preview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Name:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.name"/>
+                                
+                                <dt class="col-sm-4">Code:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.code or 'Auto-generated'"/>
+                                
+                                <dt class="col-sm-4">Category:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.category"/>
+                                
+                                <dt class="col-sm-4">Type:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.type"/>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Sales Price:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.price"/>
+                                
+                                <dt class="col-sm-4">Cost Price:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.cost"/>
+                                
+                                <dt class="col-sm-4">Template:</dt>
+                                <dd class="col-sm-8" t-esc="props.productData.template"/>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

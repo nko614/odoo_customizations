@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Function to update existing custom products with correct routes -->
+        <function model="product.template" name="_ensure_custom_product_routes"/>
+    </data>
+</odoo>

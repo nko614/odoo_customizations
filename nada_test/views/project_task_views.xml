@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form2_inherit_mileage" model="ir.ui.view">
+        <field name="name">view.task.form2.inherit.mileage</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_phone']/.." position="after">
+                <label for="fsm_mileage" invisible="not is_fsm or has_template_ancestor or has_project_template"/>
+                <div class="o_row" invisible="not is_fsm or has_template_ancestor or has_project_template">
+                    <field name="fsm_mileage"/>
+                    <span>miles</span>
+                    <span class="text-muted ms-2">(Cost: <field name="fsm_mileage_cost" widget="monetary"/>)</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

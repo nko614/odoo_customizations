@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_simple_product_creator,simple.product.creator,model_simple_product_creator,sales_team.group_sale_salesman,1,1,1,1
+access_simple_bom_creator,simple.bom.creator,model_simple_bom_creator,sales_team.group_sale_salesman,1,1,1,1
+access_simple_bom_line,simple.bom.line,model_simple_bom_line,sales_team.group_sale_salesman,1,1,1,1

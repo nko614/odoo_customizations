@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Stripe Configuration -->
+        <record id="stripe_config_default" model="stripe.config">
+            <field name="name">Default Stripe Configuration</field>
+            <field name="publishable_key">pk_test_51S1ojFRK33XhtUdIELTGSXxUL3fBlTQxmTyAXXZrRU5xfJxE6aD8wWDlAY4MN8BiT234jT7boFT9aW28k9Ic2NLa00ZIgysaEm</field>
+            <field name="secret_key">sk_test_51S1ojFRK33XhtUdIefG8JtkBT5ZhEeoSh0P5YEcQqWRkLBQi0Iqwdv5fjKevlKODnV6LBz6I7YVWwyJlbMqkn9iX00xYXLYQ1H</field>
+            <field name="is_test_mode">True</field>
+        </record>
+    </data>
+</odoo>

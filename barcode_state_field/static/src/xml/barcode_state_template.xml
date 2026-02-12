@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Extend the main barcode component to add State selector -->
+    <t t-name="barcode_state_field.MainComponent" t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension">
+        <xpath expr="//nav[@class='navbar-nav'][last()]" position="before">
+            <div class="navbar-nav me-3">
+                <div class="d-flex align-items-center bg-white rounded px-2 py-1">
+                    <label for="item_state_selector" class="me-2 mb-0 fw-bold">State:</label>
+                    <select id="item_state_selector" class="form-select form-select-sm" style="width: 100px;">
+                        <option value="new">New</option>
+                        <option value="used">Used</option>
+                    </select>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

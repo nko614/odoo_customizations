@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu Items -->
+    <menuitem id="menu_slow_moving_stock_report"
+              name="Slow Moving Stock"
+              parent="stock.menu_stock_inventory_control"
+              action="action_slow_moving_stock_report"
+              sequence="50"/>
+</odoo>

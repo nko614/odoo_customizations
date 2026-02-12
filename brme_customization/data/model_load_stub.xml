@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dummy_crm_lead_distributor_distance" model="crm.lead.distributor.distance">
+        <field name="distributor_id" eval="False"/>
+        <field name="distance_km">0.0</field>
+        <field name="lead_id" eval="False"/>
+    </record>
+</odoo>

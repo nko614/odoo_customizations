@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add Split Shipping checkbox to sale order form -->
+    <record id="view_order_form_split_shipping" model="ir.ui.view">
+        <field name="name">sale.order.form.split.shipping</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Split Shipping checkbox in the order header area -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="split_shipping"/>
+            </xpath>
+
+            <!-- Add Shipment Date column to order lines tree view -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="after">
+                <field name="shipment_date"
+                       column_invisible="not parent.split_shipping"
+                       optional="show"/>
+            </xpath>
+
+            <!-- Add Shipment Date to order line form view (when opening line details) -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom_qty']" position="after">
+                <field name="shipment_date"
+                       invisible="not parent.split_shipping"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Also add to quotation template form if it exists -->
+    <record id="view_order_template_form_split_shipping" model="ir.ui.view">
+        <field name="name">sale.order.template.form.split.shipping</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <!-- Ensure the split_shipping field is also visible in other potential locations -->
+            <xpath expr="//page[@name='other_information']//group[@name='sale_shipping']" position="inside">
+                <field name="split_shipping" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

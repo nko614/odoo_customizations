@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_custom_products_root"
+                  name="Custom Products"
+                  sequence="50"
+                  groups="sales_team.group_sale_salesman,mrp.group_mrp_user"/>
+
+        <!-- Configuration Menu -->
+        <menuitem id="menu_custom_products_config"
+                  name="Configuration"
+                  parent="menu_custom_products_root"
+                  sequence="100"/>
+
+        <!-- Products Menu -->
+        <menuitem id="menu_custom_products_products"
+                  name="Products"
+                  parent="menu_custom_products_root"
+                  sequence="10"/>
+
+        <!-- Orders Menu -->
+        <menuitem id="menu_custom_products_orders"
+                  name="Orders &amp; BOMs"
+                  parent="menu_custom_products_root"
+                  sequence="20"/>
+
+        <!-- Product Configurations -->
+        <menuitem id="menu_custom_product_configs"
+                  name="Custom Configurations"
+                  parent="menu_custom_products_products"
+                  action="action_custom_product_config"
+                  sequence="10"/>
+
+        <!-- Product Templates -->
+        <menuitem id="menu_custom_product_templates"
+                  name="Product Templates"
+                  parent="menu_custom_products_config"
+                  action="action_custom_product_template"
+                  sequence="10"/>
+
+        <!-- Custom BOMs -->
+        <menuitem id="menu_custom_boms"
+                  name="Custom BOMs"
+                  parent="menu_custom_products_orders"
+                  action="action_custom_boms"
+                  sequence="10"/>
+
+        <!-- Sales Orders with Custom Products -->
+        <record id="action_sale_order_custom" model="ir.actions.act_window">
+            <field name="name">Sales Orders (Custom Products)</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('order_line.is_custom_product', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No sales orders with custom products yet!
+                </p>
+                <p>
+                    Sales orders containing custom products will appear here.
+                    Use the "Create Custom Product" button on sales orders to get started.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_sale_order_custom"
+                  name="Sales Orders (Custom)"
+                  parent="menu_custom_products_orders"
+                  action="action_sale_order_custom"
+                  sequence="20"/>
+
+        <!-- Quick Actions Menu -->
+        <menuitem id="menu_custom_products_actions"
+                  name="Quick Actions"
+                  parent="menu_custom_products_root"
+                  sequence="90"/>
+
+        <!-- Create Custom Product Action -->
+        <record id="action_create_custom_product_wizard" model="ir.actions.act_window">
+            <field name="name">Create Custom Product</field>
+            <field name="res_model">custom.product.creator</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p>
+                    Create a new custom product with specific configurations
+                    and automatically generate the bill of materials if needed.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_create_custom_product"
+                  name="Create Custom Product"
+                  parent="menu_custom_products_actions"
+                  action="action_create_custom_product_wizard"
+                  sequence="10"/>
+
+        <!-- Build BOM Action -->
+        <record id="action_build_bom_wizard" model="ir.actions.act_window">
+            <field name="name">Build BOM</field>
+            <field name="res_model">bom.builder.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p>
+                    Use the interactive BOM builder to create and customize
+                    bills of materials with components, costs, and alternatives.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_build_bom"
+                  name="Build BOM"
+                  parent="menu_custom_products_actions"
+                  action="action_build_bom_wizard"
+                  sequence="20"/>
+
+        <!-- Dashboard/Overview -->
+        <record id="action_custom_products_dashboard" model="ir.actions.client">
+            <field name="name">Custom Products Dashboard</field>
+            <field name="tag">custom_products_dashboard</field>
+        </record>
+
+        <menuitem id="menu_custom_products_dashboard"
+                  name="Dashboard"
+                  parent="menu_custom_products_root"
+                  action="action_custom_products_dashboard"
+                  sequence="5"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="linkedin_import_log_view_list" model="ir.ui.view">
+        <field name="name">linkedin.import.log.list</field>
+        <field name="model">linkedin.import.log</field>
+        <field name="arch" type="xml">
+            <list string="LinkedIn Import Logs" create="false" edit="false">
+                <field name="date_import"/>
+                <field name="records_received"/>
+                <field name="records_created"/>
+                <field name="records_updated"/>
+                <field name="records_failed"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'success'"
+                       decoration-warning="state == 'partial'"
+                       decoration-danger="state == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="linkedin_import_log_view_form" model="ir.ui.view">
+        <field name="name">linkedin.import.log.form</field>
+        <field name="model">linkedin.import.log</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Import Log" create="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Summary">
+                            <field name="date_import"/>
+                            <field name="records_received"/>
+                            <field name="records_created"/>
+                            <field name="records_updated"/>
+                            <field name="records_failed"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Errors" name="errors"
+                              invisible="not error_details">
+                            <field name="error_details"/>
+                        </page>
+                        <page string="Raw Payload" name="payload">
+                            <field name="raw_payload"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="linkedin_import_log_action" model="ir.actions.act_window">
+        <field name="name">LinkedIn Import Logs</field>
+        <field name="res_model">linkedin.import.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu under CRM > Configuration -->
+    <menuitem id="menu_linkedin_import_log"
+              name="LinkedIn Import Logs"
+              parent="crm.crm_menu_config"
+              action="linkedin_import_log_action"
+              sequence="100"/>
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- MRP BOM Form View with Custom Features -->
+        <record id="view_mrp_bom_form_custom" model="ir.ui.view">
+            <field name="name">mrp.bom.form.custom</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Custom BOM" name="custom_bom" invisible="is_custom_bom == False">
+                        <group>
+                            <group string="Custom BOM Information">
+                                <field name="is_custom_bom"/>
+                                <field name="custom_config_id" invisible="is_custom_bom == False"/>
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="template_bom_id"/>
+                            </group>
+                            <group string="Cost Analysis">
+                                <field name="estimated_cost" readonly="1"/>
+                                <field name="labor_cost"/>
+                                <field name="overhead_cost"/>
+                                <field name="total_cost" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Pricing">
+                                <field name="margin_percentage"/>
+                                <field name="suggested_price" readonly="1"/>
+                            </group>
+                            <group string="Manufacturing">
+                                <field name="complexity_level"/>
+                                <field name="lead_time_days"/>
+                            </group>
+                        </group>
+                        <group string="Manufacturing Notes">
+                            <field name="notes" nolabel="1" placeholder="Special manufacturing instructions..."/>
+                        </group>
+                    </page>
+                </notebook>
+
+                <field name="code" position="before">
+                    <div class="alert alert-info" invisible="is_custom_bom != True">
+                        <strong>Custom BOM:</strong> This is a custom bill of materials with enhanced cost tracking.
+                    </div>
+                </field>
+
+                <field name="code" position="after">
+                    <field name="is_custom_bom" readonly="1" invisible="is_custom_bom == False"/>
+                </field>
+            </field>
+        </record>
+
+
+        <!-- Custom BOMs Action -->
+        <record id="action_custom_boms" model="ir.actions.act_window">
+            <field name="name">Custom BOMs</field>
+            <field name="res_model">mrp.bom</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('is_custom_bom', '=', True)]</field>
+            <field name="context">{'default_is_custom_bom': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first custom BOM!
+                </p>
+                <p>
+                    Custom BOMs are created specifically for unique products
+                    and customer requirements. They include cost analysis and
+                    manufacturing complexity tracking.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

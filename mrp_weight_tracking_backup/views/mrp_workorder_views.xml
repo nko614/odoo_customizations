@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MRP Workorder Tree View Extension to add weight tracking toggle -->
+    <record id="mrp_workorder_tree_inherit_weight" model="ir.ui.view">
+        <field name="name">mrp.workorder.tree.inherit.weight</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_start']" position="after">
+                <button name="toggle_weight_tracking" type="object" 
+                        title="Toggle Weight Tracking (click to enable/disable)"
+                        icon="fa-balance-scale"
+                        class="btn-outline-secondary px-2"
+                        invisible="production_state in ('draft', 'done', 'cancel')" />
+            </xpath>
+            <!-- Add weight tracking fields to tree view -->
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="has_weight_tracking" string="Weight Tracking" optional="show" widget="boolean"/>
+                <field name="start_weight" string="Start Weight" optional="hide" invisible="not has_weight_tracking"/>
+                <field name="end_weight" string="End Weight" optional="hide" invisible="not has_weight_tracking"/>
+                <field name="delta_weight" string="Paint Used" optional="hide" invisible="not has_weight_tracking"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

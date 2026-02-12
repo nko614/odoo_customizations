@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Custom tree view for contacts with invoice total -->
+    <record id="view_partner_tree_invoice_total" model="ir.ui.view">
+        <field name="name">res.partner.tree.invoice.total</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list default_order="total_invoiced_amount desc">
+                <field name="name"/>
+                <field name="street"/>
+                <field name="city"/>
+                <field name="state_id"/>
+                <field name="zip"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="total_invoiced_amount"/>
+            </list>
+        </field>
+    </record>
+</odoo>

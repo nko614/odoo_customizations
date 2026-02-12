@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Stripe Payment Wizard Form -->
+    <record id="view_stripe_payment_wizard_form" model="ir.ui.view">
+        <field name="name">stripe.payment.wizard.form</field>
+        <field name="model">stripe.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Stripe Payment">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <p><i class="fa fa-info-circle"/> This will send a payment to the vendor's Stripe account.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="invoice_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="stripe_account_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" readonly="1"/>
+                            <field name="amount"/>
+                            <field name="payment_description"/>
+                        </group>
+                    </group>
+                    
+                    <div class="alert alert-warning" role="alert" 
+                         invisible="stripe_account_id != False">
+                        <p><i class="fa fa-exclamation-triangle"/> Vendor does not have a Stripe account set up!</p>
+                    </div>
+                </sheet>
+                
+                <footer>
+                    <button name="action_send_payment" 
+                            type="object" 
+                            string="Send Payment" 
+                            class="btn-primary"
+                            invisible="stripe_account_id == False"/>
+                    
+                    <button name="action_check_vendor_status" 
+                            type="object" 
+                            string="Check Vendor Status" 
+                            class="btn-warning"/>
+                    
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

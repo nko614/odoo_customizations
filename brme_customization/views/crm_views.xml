@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Server Action to find closest distributors -->
+        <record id="action_find_closest_distributors" model="ir.actions.server">
+            <field name="name">Find Closest Distributors</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="state">code</field>
+            <field name="code">
+for record in records:
+    record.action_find_closest_distributors()
+            </field>
+        </record>
+
+        <!-- Inherit CRM Lead form view to add the button -->
+        <record id="crm_lead_view_form_inherit_distributor" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit.distributor</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="%(action_find_closest_distributors)d" 
+                            type="action" 
+                            string="Find Closest Distributors" 
+                            class="btn-secondary"
+                            help="Find the 3 closest distributors based on address"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add distributor information to the lead form -->
+        <record id="crm_lead_view_form_distributor_info" model="ir.ui.view">
+            <field name="name">crm.lead.form.distributor.info</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Distributors" name="distributors">
+                        <group>
+                            <field name="distributor_count" readonly="1"/>
+                        </group>
+                        <field name="distributor_distance_ids">
+                            <list>
+                                <field name="distributor_id"/>
+                                <field name="distance_km"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_crm_lead_distributor_distance_tree" model="ir.ui.view">
+            <field name="name">crm.lead.distributor.distance.tree</field>
+            <field name="model">crm.lead.distributor.distance</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="distributor_id"/>
+                    <field name="distance_km"/>
+                    <field name="lead_id"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action to open the tree view -->
+        <record id="action_crm_lead_distributor_distance" model="ir.actions.act_window">
+            <field name="name">Distributor Distances</field>
+            <field name="res_model">crm.lead.distributor.distance</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <!-- Optional menu item to access the view -->
+        <menuitem id="menu_crm_lead_distributor_distance_root" name="Distributor Distances"
+                  parent="crm.crm_menu_root"
+                  action="action_crm_lead_distributor_distance"/>
+
+        <!-- Security Rules for crm.lead.distributor.distance -->
+        <record id="access_crm_lead_distributor_distance_user" model="ir.model.access">
+            <field name="name">crm.lead.distributor.distance.user</field>
+            <field name="model_id" ref="model_crm_lead_distributor_distance"/>
+            <field name="group_id" ref="sales_team.group_sale_salesman"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="access_crm_lead_distributor_distance_manager" model="ir.model.access">
+            <field name="name">crm.lead.distributor.distance.manager</field>
+            <field name="model_id" ref="model_crm_lead_distributor_distance"/>
+            <field name="group_id" ref="sales_team.group_sale_manager"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="access_crm_lead_distributor_distance_all" model="ir.model.access">
+            <field name="name">crm.lead.distributor.distance.all</field>
+            <field name="model_id" ref="model_crm_lead_distributor_distance"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Record Rule for crm.lead.distributor.distance -->
+        <record id="rule_crm_lead_distributor_distance_own" model="ir.rule">
+            <field name="name">CRM Lead Distributor Distance: Own Company</field>
+            <field name="model_id" ref="model_crm_lead_distributor_distance"/>
+            <field name="domain_force">['|', ('lead_id.company_id', '=', False), ('lead_id.company_id', 'in', company_ids)]</field>
+        </record>
+
+    </data>
+</odoo>
