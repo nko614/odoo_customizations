@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_disassembly_wizard_form" model="ir.ui.view">
+        <field name="name">disassembly.wizard.form</field>
+        <field name="model">disassembly.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Partial Disassembly">
+                <group>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="bom_id"/>
+                        <field name="product_qty"/>
+                        <field name="product_tmpl_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="location_id"/>
+                        <field name="location_dest_id"/>
+                    </group>
+                </group>
+                <separator string="Select components to remove"/>
+                <field name="line_ids">
+                    <list editable="bottom">
+                        <field name="selected" widget="boolean_toggle"/>
+                        <field name="product_id"/>
+                        <field name="product_qty"/>
+                        <field name="product_uom_id"/>
+                        <field name="bom_line_id" column_invisible="1"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_create_disassembly"
+                            type="object"
+                            string="Create Disassembly Order"
+                            class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_disassembly_wizard" model="ir.actions.act_window">
+        <field name="name">Partial Disassembly</field>
+        <field name="res_model">disassembly.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu item under Manufacturing > Operations -->
+    <menuitem id="menu_disassembly_wizard"
+              name="Partial Disassembly"
+              action="action_disassembly_wizard"
+              parent="mrp.menu_mrp_manufacturing"
+              sequence="99"/>
+</odoo>
