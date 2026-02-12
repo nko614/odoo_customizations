@@ -142,6 +142,7 @@ class DisassemblyWizard(models.TransientModel):
             else:
                 for move_line in move.move_line_ids:
                     move_line.quantity = move.product_uom_qty
+        moves.picked = True
         moves._action_done()
 
         return {
