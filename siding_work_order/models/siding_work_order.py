@@ -38,7 +38,7 @@ class SidingWorkOrder(models.Model):
     mailing_zip = fields.Char(string='Mailing Zip', related='partner_id.zip', readonly=False, store=True)
     customer_email = fields.Char(string='Customer Email', related='partner_id.email', readonly=False, store=True)
     phone_primary = fields.Char(string='Phone (Primary)', related='partner_id.phone', readonly=False, store=True)
-    phone_alt = fields.Char(string='Phone (Alt)', related='partner_id.mobile', readonly=False, store=True)
+    phone_alt = fields.Char(string='Phone (Alt)')
     
     # BODY OF HOUSE — LIFETIME VINYL & FIBERGLASS
     vinyl_alside_charter_oak = fields.Boolean(string='Alside Charter Oak')

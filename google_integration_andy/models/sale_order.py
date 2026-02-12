@@ -13,6 +13,7 @@ class SaleOrder(models.Model):
     vendor_distance = fields.Float(
         string='Distance (miles)',
         compute='_compute_nearest_vendor',
+        store=True,
         digits=(10, 2),
         help='Distance to nearest vendor in miles'
     )
