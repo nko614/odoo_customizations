@@ -113,15 +113,13 @@ class DisassemblyWizard(models.TransientModel):
         if not production_location:
             raise UserError(_('No virtual production location found for this company.'))
 
-        # Create a picking to group all the moves
+        # Use receipt picking type (incoming) since we're adding parts to stock
         warehouse = self.env['stock.warehouse'].search([
             ('company_id', '=', self.env.company.id),
         ], limit=1)
-        picking_type = warehouse.int_type_id if warehouse else self.env['stock.picking.type'].search([
-            ('code', '=', 'internal'),
-        ], limit=1)
+        picking_type = warehouse.in_type_id if warehouse else False
         if not picking_type:
-            raise UserError(_('No internal transfer operation type found.'))
+            raise UserError(_('No receipt operation type found for this warehouse.'))
 
         picking = self.env['stock.picking'].create({
             'picking_type_id': picking_type.id,
