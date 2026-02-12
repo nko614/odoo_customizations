@@ -84,7 +84,7 @@ action = {
                 <filter string="High Value Items" name="high_value" domain="[('value_on_hand', '&gt;', 1000)]"/>
                 <filter string="Has Stock" name="has_stock" domain="[('qty_on_hand', '&gt;', 0)]"/>
                 <filter string="Low Stock" name="low_stock" domain="[('qty_on_hand', '&lt;', 10)]"/>
-                <group expand="0" string="Group By">
+                <group string="Group By">
                     <filter name="group_category" string="Product Category" context="{'group_by': 'categ_id'}"/>
                     <filter name="group_location" string="Location" context="{'group_by': 'location_id'}"/>
                 </group>
