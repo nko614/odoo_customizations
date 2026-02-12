@@ -106,7 +106,12 @@ class DisassemblyWizard(models.TransientModel):
         if not selected_lines:
             raise UserError(_('Please select at least one component to remove.'))
 
-        production_location = self.env.ref('stock.location_production')
+        production_location = self.env['stock.location'].search([
+            ('usage', '=', 'production'),
+            ('company_id', '=', self.env.company.id),
+        ], limit=1)
+        if not production_location:
+            raise UserError(_('No virtual production location found for this company.'))
 
         # Create a picking to group all the moves
         picking_type = self.env['stock.picking.type'].search([
