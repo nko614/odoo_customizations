@@ -5,8 +5,9 @@
     'summary': 'Partially disassemble finished goods by selecting which sub-assemblies to remove',
     'description': """
         Allows partial disassembly of finished products. Select a manufactured product,
-        pick which sub-assemblies to remove, and the system creates an unbuild order
-        for just those components. Removed parts return to stock for separate shipping.
+        pick which sub-assemblies to remove, and the system creates stock moves
+        for just those components. The finished product stays in stock while
+        removed parts are added to stock for separate shipping.
     """,
     'author': 'NKO',
     'depends': ['mrp'],

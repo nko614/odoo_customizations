@@ -93,43 +93,57 @@ class DisassemblyWizard(models.TransientModel):
         return res
 
     def action_create_disassembly(self):
-        """Create an unbuild order for selected components only."""
+        """Create stock moves to extract selected components.
+
+        The finished product (cockpit) stays in stock — only the
+        selected sub-assemblies are moved into stock from a virtual
+        production location, representing parts removed from the
+        finished good.
+        """
         self.ensure_one()
 
         selected_lines = self.line_ids.filtered('selected')
         if not selected_lines:
             raise UserError(_('Please select at least one component to remove.'))
 
-        # Create a temporary BOM with only the selected components
-        temp_bom = self.env['mrp.bom'].create({
-            'product_tmpl_id': self.product_id.product_tmpl_id.id,
-            'product_id': self.product_id.id,
-            'product_qty': 1.0,
-            'type': 'normal',
-            'code': _('Disassembly - %s') % self.product_id.display_name,
-            'bom_line_ids': [(0, 0, {
-                'product_id': line.product_id.id,
-                'product_qty': line.product_qty,
-                'product_uom_id': line.product_uom_id.id,
-            }) for line in selected_lines],
-        })
+        production_location = self.env.ref('stock.location_production')
 
-        # Create the unbuild order
-        unbuild = self.env['mrp.unbuild'].create({
-            'product_id': self.product_id.id,
-            'bom_id': temp_bom.id,
-            'product_qty': self.product_qty,
-            'product_uom_id': self.product_id.uom_id.id,
-            'location_id': self.location_id.id,
+        # Create a picking to group all the moves
+        picking_type = self.env['stock.picking.type'].search([
+            ('code', '=', 'internal'),
+            ('warehouse_id.company_id', '=', self.env.company.id),
+        ], limit=1)
+
+        picking = self.env['stock.picking'].create({
+            'picking_type_id': picking_type.id,
+            'location_id': production_location.id,
             'location_dest_id': self.location_dest_id.id,
+            'origin': _('Disassembly - %s') % self.product_id.display_name,
         })
 
-        # Return the unbuild order form so user can review and confirm
+        # Create a stock move for each selected component
+        for line in selected_lines:
+            qty = line.product_qty * self.product_qty
+            self.env['stock.move'].create({
+                'name': _('Disassembly: %s from %s') % (
+                    line.product_id.display_name,
+                    self.product_id.display_name,
+                ),
+                'product_id': line.product_id.id,
+                'product_uom_qty': qty,
+                'product_uom': line.product_uom_id.id,
+                'location_id': production_location.id,
+                'location_dest_id': self.location_dest_id.id,
+                'picking_id': picking.id,
+            })
+
+        picking.action_confirm()
+
         return {
             'name': _('Partial Disassembly'),
             'type': 'ir.actions.act_window',
-            'res_model': 'mrp.unbuild',
-            'res_id': unbuild.id,
+            'res_model': 'stock.picking',
+            'res_id': picking.id,
             'view_mode': 'form',
             'target': 'current',
         }
