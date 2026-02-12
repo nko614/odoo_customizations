@@ -241,7 +241,7 @@
             <field name="name">x_siding_work_order.search</field>
             <field name="model">x_siding_work_order</field>
             <field name="arch" type="xml">
-                <search string="Search Siding Work Orders">
+                <search>
                     <field name="name"/>
                     <field name="partner_id"/>
                     <field name="installation_city"/>
@@ -249,13 +249,10 @@
                     <filter string="Whole House" name="filter_whole_house" domain="[('scope_whole_house', '=', True)]"/>
                     <filter string="Walls Only" name="filter_walls_only" domain="[('scope_walls_only', '=', True)]"/>
                     <filter string="Soffit/Fascia Only" name="filter_soffit_fascia" domain="[('scope_soffit_fascia_only', '=', True)]"/>
-                    <separator/>
                     <filter string="This Month" name="filter_this_month" domain="[('date_order', '&gt;=', (datetime.datetime.now().replace(day=1)).strftime('%Y-%m-%d'))]"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Date" name="group_date" context="{'group_by': 'date_order'}"/>
-                        <filter string="Customer" name="group_customer" context="{'group_by': 'partner_id'}"/>
-                        <filter string="City" name="group_city" context="{'group_by': 'installation_city'}"/>
-                    </group>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date_order'}"/>
+                    <filter string="Customer" name="group_customer" context="{'group_by': 'partner_id'}"/>
+                    <filter string="City" name="group_city" context="{'group_by': 'installation_city'}"/>
                 </search>
             </field>
         </record>

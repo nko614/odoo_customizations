@@ -151,12 +151,11 @@ class MrpWorkorder(models.Model):
     
     def button_finish(self):
         """Override to capture end weight before finishing"""
-        if self.has_weight_tracking and not self.weight_captured_at_end:
-            return self.action_capture_end_weight()
-        
-        # Create stock move for weight delta
-        self._create_weight_delta_stock_move()
-        
+        for wo in self:
+            if wo.has_weight_tracking and not wo.weight_captured_at_end:
+                return wo.action_capture_end_weight()
+            wo._create_weight_delta_stock_move()
+
         return super().button_finish()
     
     def _create_weight_delta_stock_move(self):
