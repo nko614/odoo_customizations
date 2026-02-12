@@ -118,10 +118,6 @@ class DisassemblyWizard(models.TransientModel):
         for line in selected_lines:
             qty = line.product_qty * self.product_qty
             moves |= self.env['stock.move'].create({
-                'name': _('Disassembly: %s from %s') % (
-                    line.product_id.display_name,
-                    self.product_id.display_name,
-                ),
                 'product_id': line.product_id.id,
                 'product_uom_qty': qty,
                 'product_uom': line.product_uom_id.id,
