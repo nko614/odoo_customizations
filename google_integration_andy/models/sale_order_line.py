@@ -48,9 +48,9 @@ class SaleOrderLine(models.Model):
 
         return False
 
-    def _prepare_procurement_values(self, group_id=False):
+    def _prepare_procurement_values(self):
         """Override to set the closest vendor"""
-        values = super()._prepare_procurement_values(group_id=group_id)
+        values = super()._prepare_procurement_values()
         
         # Get the closest vendor
         vendor = self._get_closest_vendor()
