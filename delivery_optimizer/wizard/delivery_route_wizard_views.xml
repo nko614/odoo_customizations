@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_route_wizard_form" model="ir.ui.view">
+        <field name="name">delivery.route.wizard.form</field>
+        <field name="model">delivery.route.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Route Preview" class="o_route_wizard_form">
+                <sheet style="min-width: 800px;">
+                    <!-- Key Metrics in Badges -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="alert alert-info text-center py-3" role="alert" style="margin-bottom: 0;">
+                                <h3 class="mb-0">
+                                    <i class="fa fa-road me-2"/>
+                                    <field name="distance_text" class="oe_inline" readonly="1"/>
+                                </h3>
+                                <small class="text-muted">Distance</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="alert alert-success text-center py-3" role="alert" style="margin-bottom: 0;">
+                                <h3 class="mb-0">
+                                    <i class="fa fa-clock-o me-2"/>
+                                    <field name="duration_text" class="oe_inline" readonly="1"/>
+                                </h3>
+                                <small class="text-muted">Driving Time</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Embedded Google Map - Full Width, Taller -->
+                    <div class="mb-4" style="height: 450px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                        <field name="embed_url" widget="google_map_embed" readonly="1" style="height: 100%;"/>
+                    </div>
+
+                    <!-- Address Details - Compact -->
+                    <div class="row">
+                        <div class="col-6">
+                            <strong class="text-muted"><i class="fa fa-warehouse me-1"/> FROM</strong>
+                            <div class="mt-1"><field name="warehouse_address" nolabel="1" readonly="1"/></div>
+                        </div>
+                        <div class="col-6">
+                            <strong class="text-muted"><i class="fa fa-map-marker me-1"/> TO</strong>
+                            <div class="mt-1"><field name="delivery_address" nolabel="1" readonly="1"/></div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden fields -->
+                    <field name="picking_id" invisible="1"/>
+                    <field name="partner_name" invisible="1"/>
+                    <field name="maps_url" invisible="1"/>
+                    <field name="distance_miles" invisible="1"/>
+                    <field name="duration_minutes" invisible="1"/>
+
+                </sheet>
+                <footer>
+                    <button name="action_open_in_google_maps" type="object"
+                            string="Open in Google Maps" class="btn-primary"
+                            icon="fa-external-link"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Make the wizard dialog larger -->
+    <record id="action_delivery_route_wizard" model="ir.actions.act_window">
+        <field name="name">Route Preview</field>
+        <field name="res_model">delivery.route.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

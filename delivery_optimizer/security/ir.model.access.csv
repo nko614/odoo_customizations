@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_picking_route_optimizer,stock.picking.route.optimizer,stock.model_stock_picking,stock.group_stock_user,1,1,1,0
+access_delivery_route_wizard,delivery.route.wizard.user,model_delivery_route_wizard,stock.group_stock_user,1,1,1,1

@@ -1,0 +1,88 @@
+/* Route Preview Button Styles */
+
+.o_route_preview_button {
+    cursor: pointer;
+}
+
+.o_route_preview_button .btn {
+    transition: all 0.2s ease;
+}
+
+.o_route_preview_button .btn:hover {
+    transform: scale(1.1);
+}
+
+.o_route_popover {
+    animation: fadeInDown 0.2s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Google Map Embed Styles */
+.o_google_map_embed {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.o_google_map_embed iframe {
+    display: block;
+}
+
+/* Route Wizard Modal - Make it larger */
+.o_route_wizard_form .o_form_sheet {
+    min-width: 800px !important;
+    max-width: 900px !important;
+}
+
+/* Make the modal dialog wider */
+.modal-dialog:has(.o_route_wizard_form) {
+    max-width: 900px !important;
+    width: 90vw !important;
+}
+
+/* Ensure the modal content fills properly */
+.o_route_wizard_form .o_form_sheet_bg {
+    padding: 20px !important;
+}
+
+/* Route info cards in wizard */
+.o_route_wizard_form .alert h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+/* List view button styling */
+.o_list_view .o_route_preview_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure popover doesn't get cut off in list view */
+.o_list_table td {
+    overflow: visible !important;
+}
+
+.o_list_table tr {
+    position: relative;
+}
+
+/* Odoo 17+ modal sizing override */
+.o_dialog:has(.o_route_wizard_form) .modal-dialog {
+    max-width: 900px !important;
+}
+
+.o_dialog:has(.o_route_wizard_form) .o_form_view {
+    min-width: 850px;
+}

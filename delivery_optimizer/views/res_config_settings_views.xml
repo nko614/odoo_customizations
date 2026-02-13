@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+      <field name="name">res.config.settings.view.form.inherit.delivery.optimizer</field>
+      <field name="model">res.config.settings</field>
+      <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form" position="inside">
+          <app data-string="Delivery Route Optimizer" string="Delivery Route Optimizer" name="delivery_optimizer" logo="/delivery_optimizer/static/description/icon.png">
+            <block title="Google Maps API" name="google_maps_settings">
+              <setting id="google_maps_api_key_setting" string="Google Maps API Key" help="Enter your Google Maps API key (requires Distance Matrix API enabled).">
+                <field name="google_maps_api_key" placeholder="Enter your Google Maps API Key"/>
+              </setting>
+            </block>
+            <block title="Automatic Optimization" name="auto_optimize_settings">
+              <setting id="auto_optimize_routes_setting" string="Auto-optimize Delivery Routes" help="Automatically optimize delivery routes at scheduled intervals.">
+                <field name="auto_optimize_routes"/>
+                <div class="mt16" invisible="not auto_optimize_routes">
+                  <label for="optimize_route_interval" string="Optimization Interval"/>
+                  <field name="optimize_route_interval"/>
+                </div>
+              </setting>
+            </block>
+          </app>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
