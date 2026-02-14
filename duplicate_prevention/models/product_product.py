@@ -8,9 +8,9 @@ class ProductProduct(models.Model):
     @api.constrains("default_code")
     def _check_duplicate_sku(self):
         prevent = self.env["ir.config_parameter"].sudo().get_param(
-            "duplicate_prevention.prevent_duplicate_sku", "False"
+            "duplicate_prevention.prevent_duplicate_sku"
         )
-        if prevent != "True":
+        if not prevent or prevent == "False":
             return
         for product in self:
             if not product.default_code:

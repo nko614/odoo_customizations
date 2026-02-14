@@ -8,20 +8,20 @@ class ResPartner(models.Model):
     @api.constrains("email")
     def _check_duplicate_customer(self):
         prevent = self.env["ir.config_parameter"].sudo().get_param(
-            "duplicate_prevention.prevent_duplicate_customer", "False"
+            "duplicate_prevention.prevent_duplicate_customer"
         )
-        if prevent != "True":
+        if not prevent or prevent == "False":
             return
         for partner in self:
-            if not partner.email or not partner.is_company:
+            if not partner.email:
                 continue
-            duplicate = self.search([
+            domain = [
                 ("email", "=ilike", partner.email),
-                ("is_company", "=", True),
                 ("id", "!=", partner.id),
-            ], limit=1)
+            ]
+            duplicate = self.search(domain, limit=1)
             if duplicate:
                 raise ValidationError(
-                    _('A customer with email "%s" already exists: "%s". Duplicate customers are not allowed.')
+                    _('A contact with email "%s" already exists: "%s". Duplicate contacts are not allowed.')
                     % (partner.email, duplicate.display_name)
                 )
