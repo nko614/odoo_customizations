@@ -1,0 +1,21 @@
+<odoo>
+    <record id="res_config_settings_view_form_duplicate_prevention" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.duplicate.prevention</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Duplicate Prevention" string="Duplicate Prevention" name="duplicate_prevention">
+                    <block title="Duplicate Prevention" name="duplicate_prevention_settings">
+                        <setting id="prevent_duplicate_sku" string="Prevent Duplicate SKUs" help="Products with the same internal reference (SKU) will be blocked.">
+                            <field name="prevent_duplicate_sku"/>
+                        </setting>
+                        <setting id="prevent_duplicate_customer" string="Prevent Duplicate Customers" help="Company contacts with the same email address will be blocked.">
+                            <field name="prevent_duplicate_customer"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
