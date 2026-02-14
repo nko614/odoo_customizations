@@ -1,0 +1,27 @@
+<odoo>
+    <record id="res_config_settings_view_form_margin_alert" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.margin.alert</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Margin Alert" string="Margin Alert" name="margin_alert">
+                    <block title="Margin Threshold" name="margin_alert_settings">
+                        <setting id="margin_alert_threshold" string="Minimum Margin" help="Set the minimum acceptable profit margin percentage on sales orders.">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="margin_alert_threshold" string="Minimum Margin (%)" class="col-lg-3 o_light_label"/>
+                                    <field name="margin_alert_threshold" class="col-lg-2"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="margin_alert_mode" string="When margin is too low" class="col-lg-3 o_light_label"/>
+                                    <field name="margin_alert_mode" class="col-lg-3"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
