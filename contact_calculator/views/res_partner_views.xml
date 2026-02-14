@@ -1,0 +1,14 @@
+<odoo>
+    <record id="res_partner_form_inherit_calculator" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.calculator</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="x_field_a"/>
+                <field name="x_field_b"/>
+                <field name="x_field_c"/>
+            </field>
+        </field>
+    </record>
+</odoo>
