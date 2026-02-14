@@ -1,37 +1,50 @@
-from odoo import models, api, _
-from odoo.exceptions import ValidationError
+from odoo import models, api, fields, _
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    @api.constrains("name", "email")
-    def _check_duplicate_customer(self):
+    duplicate_warning = fields.Text(
+        compute="_compute_duplicate_warning",
+        store=False,
+    )
+
+    @api.depends("name", "email")
+    def _compute_duplicate_warning(self):
         prevent = self.env["ir.config_parameter"].sudo().get_param(
             "duplicate_prevention.prevent_duplicate_customer"
         )
-        if not prevent or prevent == "False":
-            return
         for partner in self:
-            # Check duplicate email
-            if partner.email:
-                dup_email = self.search([
-                    ("email", "=ilike", partner.email),
-                    ("id", "!=", partner.id),
-                ], limit=1)
-                if dup_email:
-                    raise ValidationError(
-                        _('A contact with email "%s" already exists: "%s". Duplicate contacts are not allowed.')
-                        % (partner.email, dup_email.display_name)
-                    )
-            # Check duplicate name
-            if partner.name:
-                dup_name = self.search([
+            if not prevent or prevent == "False":
+                partner.duplicate_warning = False
+                continue
+
+            warnings = []
+
+            if partner.name and partner._origin.id:
+                dup_names = self.search([
                     ("name", "=ilike", partner.name),
-                    ("id", "!=", partner.id),
-                ], limit=1)
-                if dup_name:
-                    raise ValidationError(
-                        _('A contact named "%s" already exists. Duplicate contacts are not allowed.')
-                        % partner.name
+                    ("id", "!=", partner._origin.id),
+                ])
+                if dup_names:
+                    names = ", ".join(
+                        "%s (ID: %s)" % (d.name, d.id) for d in dup_names[:5]
                     )
+                    warnings.append(
+                        _("Contacts with the same name: %s") % names
+                    )
+
+            if partner.email and partner._origin.id:
+                dup_emails = self.search([
+                    ("email", "=ilike", partner.email),
+                    ("id", "!=", partner._origin.id),
+                ])
+                if dup_emails:
+                    emails = ", ".join(
+                        "%s (%s, ID: %s)" % (d.name, d.email, d.id) for d in dup_emails[:5]
+                    )
+                    warnings.append(
+                        _("Contacts with the same email: %s") % emails
+                    )
+
+            partner.duplicate_warning = "\n".join(warnings) if warnings else False
