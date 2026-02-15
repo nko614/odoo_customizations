@@ -49,10 +49,8 @@
                 <filter name="canned" string="Canned" domain="[('form', '=', 'canned')]"/>
                 <filter name="dried" string="Dried" domain="[('form', '=', 'dried')]"/>
                 <filter name="juice" string="Juice" domain="[('form', '=', 'juice')]"/>
-                <group expand="0" string="Group By">
-                    <filter name="group_form" string="Form" context="{'group_by': 'form'}"/>
-                    <filter name="group_name" string="Fruit" context="{'group_by': 'name'}"/>
-                </group>
+                <filter name="group_form" string="Form" context="{'group_by': 'form'}"/>
+                <filter name="group_name" string="Fruit" context="{'group_by': 'name'}"/>
             </search>
         </field>
     </record>
