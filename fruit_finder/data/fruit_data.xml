@@ -1,0 +1,518 @@
+<odoo noupdate="1">
+    <!-- Apples -->
+    <record id="fruit_apples_fresh" model="fruit.price">
+        <field name="name">Apples</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.86</field>
+        <field name="price_per_cup">0.50</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_apples_canned" model="fruit.price">
+        <field name="name">Apples</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">1.21</field>
+        <field name="price_per_cup">0.65</field>
+        <field name="unit">per pound</field>
+        <field name="note">Applesauce</field>
+    </record>
+    <record id="fruit_apples_juice_rtd" model="fruit.price">
+        <field name="name">Apples</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.48</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+    <record id="fruit_apples_juice_frozen" model="fruit.price">
+        <field name="name">Apples</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.33</field>
+        <field name="unit">per pint</field>
+        <field name="note">Frozen concentrate</field>
+    </record>
+
+    <!-- Apricots -->
+    <record id="fruit_apricots_fresh" model="fruit.price">
+        <field name="name">Apricots</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">3.80</field>
+        <field name="price_per_cup">1.49</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_apricots_canned_juice" model="fruit.price">
+        <field name="name">Apricots</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.11</field>
+        <field name="price_per_cup">1.14</field>
+        <field name="unit">per pound</field>
+        <field name="note">In juice</field>
+    </record>
+    <record id="fruit_apricots_canned_syrup" model="fruit.price">
+        <field name="name">Apricots</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.56</field>
+        <field name="price_per_cup">1.73</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+    <record id="fruit_apricots_dried" model="fruit.price">
+        <field name="name">Apricots</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">8.63</field>
+        <field name="price_per_cup">1.24</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Bananas -->
+    <record id="fruit_bananas_fresh" model="fruit.price">
+        <field name="name">Bananas</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">0.61</field>
+        <field name="price_per_cup">0.31</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Berries (Mixed) -->
+    <record id="fruit_berries_mixed_frozen" model="fruit.price">
+        <field name="name">Berries (Mixed)</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">4.45</field>
+        <field name="price_per_cup">1.47</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Blackberries -->
+    <record id="fruit_blackberries_fresh" model="fruit.price">
+        <field name="name">Blackberries</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">6.83</field>
+        <field name="price_per_cup">2.28</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_blackberries_frozen" model="fruit.price">
+        <field name="name">Blackberries</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">4.71</field>
+        <field name="price_per_cup">1.56</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Blueberries -->
+    <record id="fruit_blueberries_fresh" model="fruit.price">
+        <field name="name">Blueberries</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">5.13</field>
+        <field name="price_per_cup">1.73</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_blueberries_frozen" model="fruit.price">
+        <field name="name">Blueberries</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">4.20</field>
+        <field name="price_per_cup">1.39</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Cantaloupe -->
+    <record id="fruit_cantaloupe_fresh" model="fruit.price">
+        <field name="name">Cantaloupe</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">0.79</field>
+        <field name="price_per_cup">0.58</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Cherries -->
+    <record id="fruit_cherries_fresh" model="fruit.price">
+        <field name="name">Cherries</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">3.66</field>
+        <field name="price_per_cup">1.36</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_cherries_canned" model="fruit.price">
+        <field name="name">Cherries</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">6.31</field>
+        <field name="price_per_cup">4.28</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+
+    <!-- Clementines -->
+    <record id="fruit_clementines_fresh" model="fruit.price">
+        <field name="name">Clementines</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.59</field>
+        <field name="price_per_cup">0.95</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Cranberries -->
+    <record id="fruit_cranberries_dried" model="fruit.price">
+        <field name="name">Cranberries</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">5.26</field>
+        <field name="price_per_cup">0.65</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Dates -->
+    <record id="fruit_dates_dried" model="fruit.price">
+        <field name="name">Dates</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">5.89</field>
+        <field name="price_per_cup">0.97</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Figs -->
+    <record id="fruit_figs_dried" model="fruit.price">
+        <field name="name">Figs</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">8.05</field>
+        <field name="price_per_cup">1.39</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Fruit Cocktail -->
+    <record id="fruit_cocktail_canned_juice" model="fruit.price">
+        <field name="name">Fruit Cocktail</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.65</field>
+        <field name="price_per_cup">1.43</field>
+        <field name="unit">per pound</field>
+        <field name="note">In juice</field>
+    </record>
+    <record id="fruit_cocktail_canned_syrup" model="fruit.price">
+        <field name="name">Fruit Cocktail</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.31</field>
+        <field name="price_per_cup">1.57</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+
+    <!-- Grapefruit -->
+    <record id="fruit_grapefruit_fresh" model="fruit.price">
+        <field name="name">Grapefruit</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.40</field>
+        <field name="price_per_cup">1.32</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_grapefruit_juice" model="fruit.price">
+        <field name="name">Grapefruit</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.61</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+
+    <!-- Grapes -->
+    <record id="fruit_grapes_fresh" model="fruit.price">
+        <field name="name">Grapes</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.25</field>
+        <field name="price_per_cup">0.77</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_grapes_dried" model="fruit.price">
+        <field name="name">Grapes</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">4.33</field>
+        <field name="price_per_cup">0.72</field>
+        <field name="unit">per pound</field>
+        <field name="note">Raisins</field>
+    </record>
+    <record id="fruit_grapes_juice_rtd" model="fruit.price">
+        <field name="name">Grapes</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.58</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+    <record id="fruit_grapes_juice_frozen" model="fruit.price">
+        <field name="name">Grapes</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.41</field>
+        <field name="unit">per pint</field>
+        <field name="note">Frozen concentrate</field>
+    </record>
+
+    <!-- Honeydew -->
+    <record id="fruit_honeydew_fresh" model="fruit.price">
+        <field name="name">Honeydew</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.25</field>
+        <field name="price_per_cup">1.02</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Kiwi -->
+    <record id="fruit_kiwi_fresh" model="fruit.price">
+        <field name="name">Kiwi</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.83</field>
+        <field name="price_per_cup">1.44</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Mangoes -->
+    <record id="fruit_mangoes_fresh" model="fruit.price">
+        <field name="name">Mangoes</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.46</field>
+        <field name="price_per_cup">0.75</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_mangoes_dried" model="fruit.price">
+        <field name="name">Mangoes</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">10.11</field>
+        <field name="price_per_cup">1.27</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Nectarines -->
+    <record id="fruit_nectarines_fresh" model="fruit.price">
+        <field name="name">Nectarines</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.48</field>
+        <field name="price_per_cup">0.87</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Oranges -->
+    <record id="fruit_oranges_fresh" model="fruit.price">
+        <field name="name">Oranges</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.44</field>
+        <field name="price_per_cup">0.86</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_oranges_juice_rtd" model="fruit.price">
+        <field name="name">Oranges</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.58</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+    <record id="fruit_oranges_juice_frozen" model="fruit.price">
+        <field name="name">Oranges</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.43</field>
+        <field name="unit">per pint</field>
+        <field name="note">Frozen concentrate</field>
+    </record>
+
+    <!-- Papaya -->
+    <record id="fruit_papaya_fresh" model="fruit.price">
+        <field name="name">Papaya</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.31</field>
+        <field name="price_per_cup">0.65</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_papaya_dried" model="fruit.price">
+        <field name="name">Papaya</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">8.17</field>
+        <field name="price_per_cup">1.26</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Peaches -->
+    <record id="fruit_peaches_fresh" model="fruit.price">
+        <field name="name">Peaches</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.46</field>
+        <field name="price_per_cup">0.87</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_peaches_canned_juice" model="fruit.price">
+        <field name="name">Peaches</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.49</field>
+        <field name="price_per_cup">1.34</field>
+        <field name="unit">per pound</field>
+        <field name="note">In juice</field>
+    </record>
+    <record id="fruit_peaches_canned_syrup" model="fruit.price">
+        <field name="name">Peaches</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.21</field>
+        <field name="price_per_cup">1.50</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+    <record id="fruit_peaches_frozen" model="fruit.price">
+        <field name="name">Peaches</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">3.76</field>
+        <field name="price_per_cup">1.24</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Pears -->
+    <record id="fruit_pears_fresh" model="fruit.price">
+        <field name="name">Pears</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">1.92</field>
+        <field name="price_per_cup">0.77</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_pears_canned_juice" model="fruit.price">
+        <field name="name">Pears</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.33</field>
+        <field name="price_per_cup">1.26</field>
+        <field name="unit">per pound</field>
+        <field name="note">In juice</field>
+    </record>
+    <record id="fruit_pears_canned_syrup" model="fruit.price">
+        <field name="name">Pears</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">2.32</field>
+        <field name="price_per_cup">1.57</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+
+    <!-- Pineapple -->
+    <record id="fruit_pineapple_fresh" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">0.67</field>
+        <field name="price_per_cup">0.48</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_pineapple_canned_juice" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">1.72</field>
+        <field name="price_per_cup">0.93</field>
+        <field name="unit">per pound</field>
+        <field name="note">In juice</field>
+    </record>
+    <record id="fruit_pineapple_canned_syrup" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">canned</field>
+        <field name="price_per_lb">1.83</field>
+        <field name="price_per_cup">1.24</field>
+        <field name="unit">per pound</field>
+        <field name="note">In syrup</field>
+    </record>
+    <record id="fruit_pineapple_dried" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">7.95</field>
+        <field name="price_per_cup">1.23</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_pineapple_juice_rtd" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.69</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+    <record id="fruit_pineapple_juice_frozen" model="fruit.price">
+        <field name="name">Pineapple</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.38</field>
+        <field name="unit">per pint</field>
+        <field name="note">Frozen concentrate</field>
+    </record>
+
+    <!-- Plums -->
+    <record id="fruit_plums_fresh" model="fruit.price">
+        <field name="name">Plums</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.66</field>
+        <field name="price_per_cup">1.03</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_plums_dried" model="fruit.price">
+        <field name="name">Plums</field>
+        <field name="form">dried</field>
+        <field name="price_per_lb">6.91</field>
+        <field name="price_per_cup">1.29</field>
+        <field name="unit">per pound</field>
+        <field name="note">Prunes</field>
+    </record>
+    <record id="fruit_plums_juice" model="fruit.price">
+        <field name="name">Plums</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">0.90</field>
+        <field name="unit">per pint</field>
+        <field name="note">Prune juice</field>
+    </record>
+
+    <!-- Pomegranate -->
+    <record id="fruit_pomegranate_fresh" model="fruit.price">
+        <field name="name">Pomegranate</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">2.48</field>
+        <field name="price_per_cup">1.51</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_pomegranate_juice" model="fruit.price">
+        <field name="name">Pomegranate</field>
+        <field name="form">juice</field>
+        <field name="price_per_lb">0</field>
+        <field name="price_per_cup">1.59</field>
+        <field name="unit">per pint</field>
+        <field name="note">Ready to drink</field>
+    </record>
+
+    <!-- Raspberries -->
+    <record id="fruit_raspberries_fresh" model="fruit.price">
+        <field name="name">Raspberries</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">7.97</field>
+        <field name="price_per_cup">2.65</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_raspberries_frozen" model="fruit.price">
+        <field name="name">Raspberries</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">6.21</field>
+        <field name="price_per_cup">2.05</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Strawberries -->
+    <record id="fruit_strawberries_fresh" model="fruit.price">
+        <field name="name">Strawberries</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">3.08</field>
+        <field name="price_per_cup">1.05</field>
+        <field name="unit">per pound</field>
+    </record>
+    <record id="fruit_strawberries_frozen" model="fruit.price">
+        <field name="name">Strawberries</field>
+        <field name="form">frozen</field>
+        <field name="price_per_lb">3.47</field>
+        <field name="price_per_cup">1.15</field>
+        <field name="unit">per pound</field>
+    </record>
+
+    <!-- Watermelon -->
+    <record id="fruit_watermelon_fresh" model="fruit.price">
+        <field name="name">Watermelon</field>
+        <field name="form">fresh</field>
+        <field name="price_per_lb">0.41</field>
+        <field name="price_per_cup">0.26</field>
+        <field name="unit">per pound</field>
+    </record>
+</odoo>
