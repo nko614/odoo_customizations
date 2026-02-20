@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="woocommerce_menu_root"
+        name="Woocommerce"
+        parent="sale.menu_sale_config"
+        sequence="45">
+            <menuitem id="menu_woocommerce_accounts"
+                name="Accounts"
+                action="action_woocommerce_accounts"/>
+            <menuitem id="menu_woocommerce_offer"
+                name="Offers"
+                action="action_woocommerce_offers"/>
+    </menuitem>
+</odoo>
