@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_sales_dashboard" model="ir.actions.client">
+        <field name="name">Sales Dashboard</field>
+        <field name="tag">sales_dashboard</field>
+    </record>
+
+    <menuitem
+        id="menu_sales_dashboard_root"
+        name="Sales Dashboard"
+        action="action_sales_dashboard"
+        web_icon="sales_dashboard,static/src/img/icon.png"
+        sequence="5"
+    />
+</odoo>

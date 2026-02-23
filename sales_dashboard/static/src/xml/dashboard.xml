@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="sales_dashboard.Dashboard">
+        <div class="sales-dashboard o_action">
+            <div class="sales-dashboard-header">
+                <h1>Sales Dashboard</h1>
+                <div class="date-picker">
+                    <label for="dash-date">Date:</label>
+                    <input type="date" id="dash-date"
+                           t-att-value="state.date"
+                           t-on-change="onDateChange"/>
+                </div>
+            </div>
+
+            <div t-if="state.loading" class="sales-dashboard-loading">
+                <i class="fa fa-spinner fa-spin fa-3x"/>
+                <p>Loading...</p>
+            </div>
+
+            <div t-else="">
+                <!-- Summary Cards -->
+                <div class="sales-dashboard-cards">
+                    <div class="dashboard-card card-orders" t-on-click="() => this.viewOrders(null)">
+                        <div class="card-icon"><i class="fa fa-shopping-cart fa-2x"/></div>
+                        <div class="card-body">
+                            <span class="card-value" t-out="state.total_orders"/>
+                            <span class="card-label">Confirmed Orders</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card card-revenue">
+                        <div class="card-icon"><i class="fa fa-dollar fa-2x"/></div>
+                        <div class="card-body">
+                            <span class="card-value" t-out="formatCurrency(state.total_revenue)"/>
+                            <span class="card-label">Total Revenue</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card card-people">
+                        <div class="card-icon"><i class="fa fa-users fa-2x"/></div>
+                        <div class="card-body">
+                            <span class="card-value" t-out="state.salesperson_data.length"/>
+                            <span class="card-label">Active Salespeople</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salesperson Table -->
+                <div class="sales-dashboard-table">
+                    <h2>Salesperson Breakdown</h2>
+                    <t t-if="state.salesperson_data.length === 0">
+                        <div class="empty-state">
+                            <i class="fa fa-inbox fa-3x"/>
+                            <p>No confirmed orders for this date.</p>
+                        </div>
+                    </t>
+                    <table t-else="" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Salesperson</th>
+                                <th class="text-end">Orders</th>
+                                <th class="text-end">Revenue</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.salesperson_data" t-as="sp" t-key="sp.user_id">
+                                <tr>
+                                    <td t-out="sp_index + 1"/>
+                                    <td>
+                                        <i class="fa fa-user me-1"/>
+                                        <t t-out="sp.salesperson"/>
+                                    </td>
+                                    <td class="text-end" t-out="sp.order_count"/>
+                                    <td class="text-end" t-out="formatCurrency(sp.total_amount)"/>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary"
+                                                t-on-click="() => this.viewOrders(sp.user_id)">
+                                            <i class="fa fa-list"/> View Orders
+                                        </button>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
