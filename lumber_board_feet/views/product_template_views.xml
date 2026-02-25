@@ -5,12 +5,18 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <field name="weight" position="before">
-                <field name="lumber_length"/>
-                <field name="lumber_width"/>
-                <field name="lumber_thickness"/>
-                <field name="board_feet"/>
-            </field>
+            <xpath expr="//page[@name='general_information']//group" position="after">
+                <group string="Lumber Dimensions" name="lumber_dimensions">
+                    <group>
+                        <field name="lumber_length"/>
+                        <field name="lumber_width"/>
+                    </group>
+                    <group>
+                        <field name="lumber_thickness"/>
+                        <field name="board_feet"/>
+                    </group>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
