@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Stock moves list view -->
+    <record id="stock_move_tree_board_feet" model="ir.ui.view">
+        <field name="name">stock.move.tree.board_feet</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <field name="quantity" position="after">
+                <field name="total_board_feet" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Stock moves pivot view (Moves Analysis) -->
+    <record id="stock_move_pivot_board_feet" model="ir.ui.view">
+        <field name="name">stock.move.pivot.board_feet</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_pivot"/>
+        <field name="arch" type="xml">
+            <field name="product_uom_qty" position="after">
+                <field name="total_board_feet" type="measure"/>
+            </field>
+        </field>
+    </record>
+</odoo>

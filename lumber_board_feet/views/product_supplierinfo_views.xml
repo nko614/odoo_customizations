@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vendor pricelist on product form -->
+    <record id="product_supplierinfo_form_board_feet" model="ir.ui.view">
+        <field name="name">product.supplierinfo.form.board_feet</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+            <field name="price" position="after">
+                <field name="price_per_bf"/>
+                <field name="board_feet"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Vendor pricelist tree embedded in product form -->
+    <record id="product_supplierinfo_tree_board_feet" model="ir.ui.view">
+        <field name="name">product.supplierinfo.tree.board_feet</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="price" position="after">
+                <field name="price_per_bf" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

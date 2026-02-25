@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_board_feet" model="ir.ui.view">
+        <field name="name">sale.order.form.board_feet</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="after">
+                <field name="price_per_bf" optional="show"/>
+                <field name="total_board_feet" optional="show"/>
+                <field name="bf_cost" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
