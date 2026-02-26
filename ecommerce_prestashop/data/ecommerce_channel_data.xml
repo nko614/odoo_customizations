@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
-    <record id="ecommerce_channel_prestashop" model="ecommerce.channel">
-        <field name="name">Prestashop</field>
-        <field name="code">prestashop</field>
-        <field name="image_128" type="base64" file="ecommerce_prestashop/static/description/icon.png"/>
-    </record>
-</odoo>

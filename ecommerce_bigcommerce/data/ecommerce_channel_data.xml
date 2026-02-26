@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
-    <record id="ecommerce_channel_bigcommerce" model="ecommerce.channel">
-        <field name="name">BigCommerce</field>
-        <field name="code">bigcommerce</field>
-        <field name="sequence">43</field>
-        <field name="image_128" type="base64" file="ecommerce_bigcommerce/static/description/icon.png"/>
-    </record>
-</odoo>

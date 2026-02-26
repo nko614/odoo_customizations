@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ecommerce_channel_system,access.ecommerce.channel.system,model_ecommerce_channel,base.group_system,1,1,1,1
-access_ecommerce_channel_user,access.ecommerce.channel.user,model_ecommerce_channel,base.group_user,1,0,0,0
-access_ecommerce_account,access.ecommerce.account,model_ecommerce_account,base.group_user,1,1,1,1
-access_ecommerce_offer,access.ecommerce.offer,model_ecommerce_offer,base.group_user,1,1,1,1
-access_ecommerce_location,access.ecommerce.location,model_ecommerce_location,base.group_user,1,1,1,1
-access_ecommerce_recover_order_wizard,access.ecommerce.recover.order.wizard,model_ecommerce_recover_order_wizard,base.group_user,1,1,1,0
