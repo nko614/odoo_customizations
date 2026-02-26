@@ -1,0 +1,30 @@
+ORDER_STATUS = {
+    '1': 'Awaiting check payment',
+    '2': 'Payment accepted',
+    '3': 'Processing in progress',
+    '4': 'Shipped',
+    '5': 'Delivered',
+    '6': 'Canceled',
+    '7': 'Refunded',
+    '8': 'Payment Error',
+    '9': 'On backorder (paid)',
+    '10': 'Awaiting bank wire payment',
+    '11': 'Remote payment accepted',
+    '12': 'On backorder(not paid)',
+    '13': 'Awaiting Cash on Delivery Validation',
+    '14': 'Waiting for payment',
+    '15': 'Partial refund',
+    '16': 'Partial payment',
+    '17': 'Authorized. To captured by merchant',
+    '18': 'Custom',
+}
+
+PAYMENT_STATE = {
+    'not_paid': ['Canceled', 'Payment Error', 'On backorder(not paid)', 'Authorized. To captured by merchant', 'Custom'],
+    'in_payment': ['Processing in progress', 'Awaiting check payment', '', 'Awaiting bank wire payment', 'Waiting for payment'],
+    'paid': ['Payment accepted', 'Shipped', 'Delivered', 'On backorder (paid)', 'Remote payment accepted', 'Awaiting Cash on Delivery Validation'],
+    'partial': ['Partial payment'],
+    'reversed': ['Refunded', 'Partial refund'],
+    'blocked': [''],
+    'invoicing_legacy': [''],
+}

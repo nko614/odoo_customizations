@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ecommerce_channel_magento" model="ecommerce.channel">
+        <field name="name">Magento</field>
+        <field name="code">magento</field>
+        <field name="sequence">50</field>
+        <field name="image_128" type="base64" file="ecommerce_magento/static/description/icon.png"/>
+    </record>
+</odoo>

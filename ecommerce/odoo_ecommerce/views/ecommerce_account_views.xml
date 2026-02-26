@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ecommerce_account_form" model="ir.ui.view">
+        <field name="name">ecommerce.account.form</field>
+        <field name="model">ecommerce.account</field>
+        <field name="arch" type="xml">
+            <form string="E-commerce Account">
+                <header>
+                    <button type="object" name="action_connect" class="btn btn-primary" data-hotkey="v" invisible="state == 'connected'">Connect</button>
+                    <button type="object" name="action_disconnect" class="btn btn-secondary" invisible="state == 'disconnected'">Disconnect</button>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_ecommerce_offers" type="object" class="oe_stat_button" icon="fa-life-bouy" invisible="offer_count &lt; 1">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                        <button name="action_view_ecommerce_orders" type="object" class="oe_stat_button" icon="fa-dollar" invisible="order_count &lt; 1">
+                            <field name="order_count" widget="statinfo" string="Orders"/>
+                        </button>
+                        <button name="action_view_ecommerce_location" type="object" class="oe_stat_button" icon="fa-cubes" invisible="location_count &lt; 1">
+                            <field name="location_count" widget="statinfo" string="Locations"/>
+                        </button>
+                        <button name="action_view_logs" type="object" class="oe_stat_button" icon="fa-history" groups="base.group_no_one">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Logs</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center w-100 gap-5">
+                        <div class="oe_title flex-grow-1" id="title">
+                            <h1>
+                                <field name="name" placeholder="e.g. Seller Account Name"/>
+                            </h1>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 text-end" style="white-space: nowrap;">
+                            <div class="d-flex align-items-center fs-6"  invisible="not last_orders_sync">
+                                <label string="Last Synchronization:" for="last_orders_sync" class="me-1"/>
+                                <field class="m-0" name="last_orders_sync" readonly="1"/>
+                            </div>
+                            <span class="badge rounded-pill text-bg-success fs-6"
+                                invisible="state != 'connected'">
+                                Connected
+                            </span>
+                            <span class="badge rounded-pill text-bg-danger fs-6"
+                                invisible="state != 'disconnected'">
+                                Disconnected
+                            </span>
+                        </div>
+                    </div>
+                    <group>
+                        <field name="ecommerce_channel_id" readonly="id" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="fulfilled_by" readonly="state == 'connected'"/>
+                    </group>
+                    <notebook>
+                        <page name="ecommerce" string="Operations" invisible="state == 'disconnected'">
+                            <group name="ecommerce_operations" string="Operations" class="d-block w-50">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <div style="min-width: 200px;">
+                                        <button name="action_sync_products" type="object"
+                                            string="Fetch Products"
+                                            class="btn-link" icon="fa-refresh"/>
+                                    </div>
+                                    <div style="min-width: 250px;">
+                                        <label for="last_products_sync" string="Created/Updated after" class="mb-0"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <field name="last_products_sync" nolabel="1"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <div style="min-width: 200px;">
+                                        <button name="action_sync_orders" type="object"
+                                            string="Fetch Orders"
+                                            class="btn-link" icon="fa-refresh"/>
+                                    </div>
+                                    <div style="min-width: 250px;">
+                                        <label for="last_orders_sync" string="Created/Updated after" class="mb-0 opacity-100 fw-bold"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <field name="last_orders_sync" nolabel="1"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mb-2" invisible="not support_location">
+                                    <div style="min-width: 200px;">
+                                        <button  name="action_sync_locations" type="object"
+                                            string="Fetch Locations"
+                                            class="btn-link" icon="fa-refresh"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mb-2" invisible="fulfilled_by == 'ecommerce' or not support_shipping">
+                                    <div style="min-width: 200px;">
+                                        <button name="action_update_pickings" type="object"
+                                        string="Update Pickings"
+                                        class="btn-link" icon="fa-refresh"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                   <div style="min-width: 250px;">
+                                        <label for="update_inventory" string="Update Inventory" class="me-2 opacity-100 fw-bold"/>
+                                        <field name="update_inventory" nolabel="1"/>
+                                    </div>
+                                    <div class="flex-grow-1" invisible="not update_inventory">
+                                        <button name="action_update_inventory" type="object"
+                                            string="Update Inventory"
+                                            class="btn-link" icon="fa-refresh"/>
+                                    </div>
+                                </div>
+                            </group>
+                        </page>
+                        <page name="credentials" string="Credentials"/>
+                        <page name="configuration" string="Configuration">
+                            <group>
+                                <group>
+                                    <field name="tax_included" readonly="state == 'connected'"/>
+                                    <field name="company_id" invisible="1" force_save="1"/>
+                                    <field name="user_id"/>
+                                    <field name="team_id"/>
+                                    <field name="payment_journal_id"/>
+                                    <field name="account_journal_id"/>
+                                    <field name="location_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="default_product_page" string="Default Products">
+                            <field name="default_product_ids" mode="kanban"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="ecommerce_account_list" model="ir.ui.view">
+        <field name="name">ecommerce.account.list</field>
+        <field name="model">ecommerce.account</field>
+        <field name="arch" type="xml">
+            <list string="E-commerce Account">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="fulfilled_by"/>
+                <field name="state" widget="badge" decoration-success="state == 'connected'" decoration-danger="state == 'disconnected'"/>
+            </list>
+        </field>
+    </record>
+    <record id="ecommerce_account_search" model="ir.ui.view">
+        <field name="name">ecommerce.account.search</field>
+        <field name="model">ecommerce.account</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Account"/>
+                <field name="user_id" string="Salesperson"/>
+                <field name="team_id" string="Sales Team"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="state_connected" string="Connected" domain="[('state', '=', 'connected')]"/>
+                <filter name="state_disconnected" string="Disconnected" domain="[('state', '=', 'disconnected')]"/>
+                <group>
+                    <filter name="group_by_ecommerce_channel" string="E-commerce Channel" context="{'group_by': 'ecommerce_channel_id'}"/>
+                    <filter name="group_by_user" string="Salesperson" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_team" string="Sales Team" context="{'group_by': 'team_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_ecommerce_recover_order" model="ir.actions.server">
+        <field name="name">Recover Order</field>
+        <field name="model_id" ref="odoo_ecommerce.model_ecommerce_account"/>
+        <field name="binding_model_id" ref="odoo_ecommerce.model_ecommerce_account"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_ecommerce_recover_order()</field>
+    </record>
+</odoo>
