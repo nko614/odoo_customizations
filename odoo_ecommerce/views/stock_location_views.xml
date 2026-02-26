@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_location_form" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.ecommerce</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button type="object" name="action_view_ecommerce_location"
+                    class="oe_stat_button" icon="oi-arrows-v"
+                    invisible="location_count == 0">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">
+                            E-commerce Locations
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

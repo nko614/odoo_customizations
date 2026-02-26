@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ecommerce_account_form_inherited" model="ir.ui.view">
+            <field name="name">ecommerce.account.form.inherit</field>
+            <field name="model">ecommerce.account</field>
+            <field name="inherit_id" ref="odoo_ecommerce.ecommerce_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='credentials']" position="inside">
+                    <group>
+                        <group invisible="channel_code != 'woocommerce'">
+                            <field name="wc_store_url"
+                                   readonly="state == 'connected'"
+                                   required="channel_code == 'woocommerce'"
+                                   placeholder="Enter your store URL: https://example.woocommerce.com"/>
+                            <field name="wc_consumer_key"
+                                   string="Consumer Key"
+                                   readonly="state == 'connected'"
+                                   invisible="state == 'disconnected'"
+                                   groups="base.group_no_one"/>
+                            <field name="wc_consumer_secret"
+                                   string="Consumer Secret"
+                                   readonly="state == 'connected'"
+                                   invisible="state == 'disconnected'"
+                                   password="True"
+                                   groups="base.group_no_one"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_woocommerce_accounts" model="ir.actions.server">
+            <field name="name">Woocommerce Accounts</field>
+            <field name="model_id" ref="model_ecommerce_account"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_open_ecommerce_accounts('woocommerce')
+            </field>
+        </record>
+        <record id="action_woocommerce_offers" model="ir.actions.act_window">
+            <field name="name">Woocommerce Offers</field>
+            <field name="res_model">ecommerce.offer</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'create': False}</field>
+            <field name="domain">[('channel_code', '=', 'woocommerce')]</field>
+        </record>
+    </data>
+</odoo>

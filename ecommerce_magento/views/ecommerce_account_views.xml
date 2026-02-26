@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ecommerce_account_form" model="ir.ui.view">
+        <field name="name">ecommerce.account.form.inherit.ecommerce.magento</field>
+        <field name="model">ecommerce.account</field>
+        <field name="inherit_id" ref="odoo_ecommerce.ecommerce_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='credentials']" position="inside">
+                <group>
+                    <group invisible="channel_code != 'magento'">
+                        <field name="magento_base_url" string="Base URL" readonly="state == 'connected'"
+                            required="channel_code == 'magento'" widget="url"
+                        />
+                        <field name="magento_auth_method" string="Authentication Method" readonly="state == 'connected'"
+                            required="channel_code == 'magento'" widget="radio"
+                        />
+                        <field name="magento_admin_username" string="Admin Username" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'token'"
+                            invisible="magento_auth_method != 'token'"
+                        />
+                        <field name="magento_admin_password" string="Admin Password" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'token'"
+                            invisible="magento_auth_method != 'token'" password="True"
+                        />
+                        <field name="magento_oauth_consumer_key" string="Consumer Key" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'oauth'"
+                            invisible="magento_auth_method != 'oauth'" password="True"
+                        />
+                        <field name="magento_oauth_consumer_secret" string="Consumer Secret" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'oauth'"
+                            invisible="magento_auth_method != 'oauth'" password="True"
+                        />
+                        <field name="magento_oauth_access_token" string="Access Token" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'oauth'"
+                            invisible="magento_auth_method != 'oauth'" password="True"
+                        />
+                        <field name="magento_oauth_access_token_secret" string="Access Token Secret" readonly="state == 'connected'"
+                            required="channel_code == 'magento' and magento_auth_method == 'oauth'"
+                            invisible="magento_auth_method != 'oauth'" password="True"
+                        />
+                    </group>
+                    <group invisible="channel_code != 'magento'">
+                        <field name="magento_admin_pathname" string="Admin Pathname"/>
+                        <field name="magento_store_view_code" string="Store View Code" readonly="state == 'connected'"/>
+                        <field name="magento_store_view_name" string="Store View Name"/>
+                        <field name="magento_store_name" string="Store Name"/>
+                        <field name="magento_website_name" string="Website Name"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_magento_accounts" model="ir.actions.server">
+        <field name="name">Magento Accounts</field>
+        <field name="model_id" ref="model_ecommerce_account"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_open_ecommerce_accounts('magento')
+        </field>
+    </record>
+
+    <record id="action_magento_locations" model="ir.actions.act_window">
+        <field name="name">Magento Locations</field>
+        <field name="res_model">ecommerce.location</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="domain">[('channel_code', '=', 'magento')]</field>
+    </record>
+    <record id="action_magento_offers" model="ir.actions.act_window">
+        <field name="name">Magento Offers</field>
+        <field name="res_model">ecommerce.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="domain">[('channel_code', '=', 'magento')]</field>
+    </record>
+</odoo>

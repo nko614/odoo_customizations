@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ecommerce_location_list" model="ir.ui.view">
+        <field name="name">ecommerce.location.list</field>
+        <field name="model">ecommerce.location</field>
+        <field name="arch" type="xml">
+            <list string="E-commerce Location" editable="bottom">
+                <field name="name"/>
+                <field name="matched_location_id" context="{'default_name': name}"/>
+                <field name="sync_stock"/>
+                <field name="ecommerce_account_id"/>
+                <field name="ecommerce_location_identifier" optional="hide" groups="base.group_no_one"/>
+            </list>
+        </field>
+    </record>
+</odoo>

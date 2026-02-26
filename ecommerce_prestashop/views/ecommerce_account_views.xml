@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ecommerce_account_form_inherited" model="ir.ui.view">
+            <field name="name">ecommerce.account.form.inherit</field>
+            <field name="model">ecommerce.account</field>
+            <field name="inherit_id" ref="odoo_ecommerce.ecommerce_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='credentials']" position="inside">
+                    <group invisible="channel_code != 'prestashop'">
+                        <group>
+                            <field name="prestashop_store" string="Store Name" readonly="state == 'connected'"/>
+                            <field name="prestashop_url" widget="url" readonly="state == 'connected'" required="channel_code == 'prestashop'"/>
+                            <field name="webservice_key" readonly="state == 'connected'" required="channel_code == 'prestashop'" password="True"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_prestashop_accounts" model="ir.actions.server">
+            <field name="name">Prestashop Accounts</field>
+            <field name="model_id" ref="model_ecommerce_account"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_open_ecommerce_accounts('prestashop')
+            </field>
+        </record>
+        <record id="action_prestashop_locations" model="ir.actions.act_window">
+            <field name="name">Prestashop Locations</field>
+            <field name="res_model">ecommerce.location</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'create': False}</field>
+            <field name="domain">[('channel_code', '=', 'prestashop')]</field>
+        </record>
+        <record id="action_prestashop_offers" model="ir.actions.act_window">
+            <field name="name">Prestashop Offers</field>
+            <field name="res_model">ecommerce.offer</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'create': False}</field>
+            <field name="domain">[('channel_code', '=', 'prestashop')]</field>
+        </record>
+    </data>
+</odoo>
