@@ -1,24 +1,25 @@
 from odoo import api, fields, models
+from odoo.tools.mail import html2plaintext
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    customer_alert = fields.Html(
-        string="Customer Alert",
-        compute='_compute_customer_alert',
-    )
     has_mto_stock_issues = fields.Boolean(
         compute='_compute_has_mto_stock_issues',
     )
 
-    @api.depends('partner_id')
-    def _compute_customer_alert(self):
-        for order in self:
-            if order.partner_id and order.partner_id.comment:
-                order.customer_alert = order.partner_id.comment
-            else:
-                order.customer_alert = False
+    @api.onchange('partner_id')
+    def _onchange_partner_customer_alert(self):
+        if self.partner_id and self.partner_id.comment:
+            note_text = html2plaintext(self.partner_id.comment).strip()
+            if note_text:
+                return {
+                    'warning': {
+                        'title': 'CUSTOMER ALERT:',
+                        'message': note_text,
+                    }
+                }
 
     @api.depends('order_line.product_id', 'order_line.product_uom_qty')
     def _compute_has_mto_stock_issues(self):
