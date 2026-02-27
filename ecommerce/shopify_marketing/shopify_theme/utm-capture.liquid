@@ -1,0 +1,54 @@
+<script>
+(function() {
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign'];
+  var COOKIE_NAME = 'odoo_utm';
+  var COOKIE_DAYS = 30;
+
+  var params = new URLSearchParams(window.location.search);
+  var utm = {};
+  var hasUtm = false;
+
+  UTM_KEYS.forEach(function(key) {
+    var val = params.get(key);
+    if (val) {
+      utm[key] = val;
+      hasUtm = true;
+    }
+  });
+
+  if (hasUtm) {
+    var expires = new Date();
+    expires.setDate(expires.getDate() + COOKIE_DAYS);
+    document.cookie = COOKIE_NAME + '=' + encodeURIComponent(JSON.stringify(utm)) +
+      ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  function getStoredUtm() {
+    var match = document.cookie.match(new RegExp('(?:^|; )' + COOKIE_NAME + '=([^;]*)'));
+    if (match) {
+      try { return JSON.parse(decodeURIComponent(match[1])); } catch(e) {}
+    }
+    return null;
+  }
+
+  function attachUtmToCart() {
+    var stored = getStoredUtm();
+    if (!stored) return;
+
+    var attributes = {};
+    if (stored.utm_source) attributes['utm_source'] = stored.utm_source;
+    if (stored.utm_medium) attributes['utm_medium'] = stored.utm_medium;
+    if (stored.utm_campaign) attributes['utm_campaign'] = stored.utm_campaign;
+
+    if (Object.keys(attributes).length === 0) return;
+
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attributes: attributes })
+    });
+  }
+
+  attachUtmToCart();
+})();
+</script>
