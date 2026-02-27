@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mto_stock_wizard_form" model="ir.ui.view">
+        <field name="name">sale.mto.stock.wizard.form</field>
+        <field name="model">sale.mto.stock.wizard</field>
+        <field name="arch" type="xml">
+            <form string="MTO Component Stock Alert">
+                <field name="has_alternatives" invisible="1"/>
+                <field name="sale_order_id" invisible="1"/>
+                <group>
+                    <group>
+                        <field name="sale_line_product_id" readonly="1"/>
+                        <field name="sale_line_qty" readonly="1"/>
+                    </group>
+                </group>
+                <separator string="Components with Insufficient Stock"/>
+                <p class="alert alert-danger" role="alert">
+                    <strong>Warning:</strong> The following raw material components do not have enough stock to fulfill this MTO order.
+                </p>
+                <field name="line_ids" nolabel="1" readonly="1">
+                    <list>
+                        <field name="component_id"/>
+                        <field name="required_qty"/>
+                        <field name="available_qty"/>
+                        <field name="shortage_qty" decoration-danger="shortage_qty > 0"/>
+                    </list>
+                </field>
+                <separator string="Recommended Alternative Variants" invisible="not has_alternatives"/>
+                <p class="alert alert-success" role="alert" invisible="not has_alternatives">
+                    The following variants of the same product have all components in stock:
+                </p>
+                <field name="alternative_ids" nolabel="1" readonly="1"
+                       invisible="not has_alternatives">
+                    <list>
+                        <field name="product_id"/>
+                        <field name="default_code"/>
+                        <field name="variant_values"/>
+                        <button name="action_swap" type="object"
+                                string="Use This Variant"
+                                class="btn-primary"/>
+                    </list>
+                </field>
+                <p class="text-muted" invisible="has_alternatives">
+                    No alternative variants with sufficient component stock were found.
+                </p>
+                <footer>
+                    <button string="Continue Anyway" name="action_continue"
+                            type="object" class="btn-secondary"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mto_stock_wizard" model="ir.actions.act_window">
+        <field name="name">MTO Component Stock Alert</field>
+        <field name="res_model">sale.mto.stock.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mto_stock_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

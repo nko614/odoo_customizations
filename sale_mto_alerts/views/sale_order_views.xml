@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_form_customer_alert" model="ir.ui.view">
+        <field name="name">sale.order.form.customer.alert</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- MTO Stock Check button in button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="has_mto_stock_issues" invisible="1"/>
+                <button name="action_check_mto_stock"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exclamation-triangle"
+                        invisible="not has_mto_stock_issues">
+                    <span class="o_stat_text">MTO Stock</span>
+                </button>
+            </xpath>
+
+            <!-- Customer alert banner -->
+            <xpath expr="//group[@name='sale_header']" position="before">
+                <field name="customer_alert" invisible="1"/>
+                <div class="alert alert-warning mt-2 mb-2" role="alert"
+                     invisible="not customer_alert"
+                     style="font-size: 14px;">
+                    <strong style="font-size: 16px;">CUSTOMER ALERT:</strong>
+                    <br/><br/>
+                    <field name="customer_alert" nolabel="1" readonly="1" widget="html"/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
