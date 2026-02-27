@@ -5,7 +5,7 @@ class MtoStockWizard(models.TransientModel):
     _name = 'sale.mto.stock.wizard'
     _description = 'MTO Component Stock Alert'
 
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=True)
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order')
     sale_line_product_id = fields.Many2one('product.product', string='Original Product', required=True)
     sale_line_qty = fields.Float(string='Order Quantity', required=True)
     line_ids = fields.One2many(
@@ -23,25 +23,8 @@ class MtoStockWizard(models.TransientModel):
         for wiz in self:
             wiz.has_alternatives = bool(wiz.alternative_ids)
 
-    def action_swap_product(self, alt_product):
-        """Swap the product on the SO line with the alternative, then re-check."""
-        self.ensure_one()
-        order = self.sale_order_id
-        so_line = order.order_line.filtered(
-            lambda l: l.product_id == self.sale_line_product_id
-        )
-        if so_line:
-            so_line[0].product_id = alt_product
-        # Re-open the confirm flow so they can confirm or see updated status
-        return order.action_confirm()
-
-    def action_confirm_anyway(self):
-        """Confirm the order despite MTO stock shortages."""
-        self.ensure_one()
-        return self.sale_order_id.with_context(skip_mto_stock_check=True).action_confirm()
-
-    def action_cancel(self):
-        """Go back to the quotation without confirming."""
+    def action_continue(self):
+        """Continue without swapping - just close the wizard."""
         return {'type': 'ir.actions.act_window_close'}
 
 
@@ -84,6 +67,12 @@ class MtoStockWizardAlternative(models.TransientModel):
                 line.variant_values = ''
 
     def action_swap(self):
-        """Swap the sale order line product with this alternative variant."""
+        """Swap: close wizard and pass product info back to the JS caller."""
         self.ensure_one()
-        return self.wizard_id.action_swap_product(self.product_id)
+        return {
+            'type': 'ir.actions.act_window_close',
+            'infos': {
+                'productId': self.product_id.id,
+                'productName': self.product_id.display_name,
+            },
+        }

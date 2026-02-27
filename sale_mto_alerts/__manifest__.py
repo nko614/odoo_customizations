@@ -11,6 +11,11 @@
         "wizard/mto_stock_wizard_views.xml",
         "views/sale_order_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "sale_mto_alerts/static/src/js/sale_product_field_patch.js",
+        ],
+    },
     "installable": True,
     "application": False,
     "auto_install": False,
