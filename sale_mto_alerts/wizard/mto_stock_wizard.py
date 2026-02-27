@@ -24,7 +24,7 @@ class MtoStockWizard(models.TransientModel):
             wiz.has_alternatives = bool(wiz.alternative_ids)
 
     def action_swap_product(self, alt_product):
-        """Swap the product on the SO line with the alternative."""
+        """Swap the product on the SO line with the alternative, then re-check."""
         self.ensure_one()
         order = self.sale_order_id
         so_line = order.order_line.filtered(
@@ -32,10 +32,16 @@ class MtoStockWizard(models.TransientModel):
         )
         if so_line:
             so_line[0].product_id = alt_product
-        return {'type': 'ir.actions.act_window_close'}
+        # Re-open the confirm flow so they can confirm or see updated status
+        return order.action_confirm()
 
-    def action_continue(self):
-        """Continue without swapping - just close the wizard."""
+    def action_confirm_anyway(self):
+        """Confirm the order despite MTO stock shortages."""
+        self.ensure_one()
+        return self.sale_order_id.with_context(skip_mto_stock_check=True).action_confirm()
+
+    def action_cancel(self):
+        """Go back to the quotation without confirming."""
         return {'type': 'ir.actions.act_window_close'}
 
 

@@ -28,7 +28,8 @@
                 </field>
                 <separator string="Recommended Alternative Variants" invisible="not has_alternatives"/>
                 <p class="alert alert-success" role="alert" invisible="not has_alternatives">
-                    The following variants of the same product have all components in stock:
+                    The following variants of the same product have all components in stock.
+                    Click <strong>Use This Variant</strong> to swap and confirm:
                 </p>
                 <field name="alternative_ids" nolabel="1" readonly="1"
                        invisible="not has_alternatives">
@@ -45,9 +46,10 @@
                     No alternative variants with sufficient component stock were found.
                 </p>
                 <footer>
-                    <button string="Continue Anyway" name="action_continue"
+                    <button string="Confirm Anyway" name="action_confirm_anyway"
+                            type="object" class="btn-primary"/>
+                    <button string="Go Back" name="action_cancel"
                             type="object" class="btn-secondary"/>
-                    <button string="Close" special="cancel"/>
                 </footer>
             </form>
         </field>

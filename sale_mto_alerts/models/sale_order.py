@@ -1,5 +1,9 @@
+import logging
+
 from odoo import api, fields, models
 from odoo.tools.mail import html2plaintext
+
+_logger = logging.getLogger(__name__)
 
 
 class SaleOrder(models.Model):
@@ -8,9 +12,6 @@ class SaleOrder(models.Model):
     customer_alert = fields.Html(
         string="Customer Alert",
         compute='_compute_customer_alert',
-    )
-    has_mto_stock_issues = fields.Boolean(
-        compute='_compute_has_mto_stock_issues',
     )
 
     @api.depends('partner_id')
@@ -33,25 +34,27 @@ class SaleOrder(models.Model):
                     }
                 }
 
-    @api.depends('order_line.product_id', 'order_line.product_uom_qty')
-    def _compute_has_mto_stock_issues(self):
-        for order in self:
-            has_issues = False
-            for line in order.order_line:
-                if not line.product_id or line.display_type:
-                    continue
-                if line._is_mto_product(line.product_id):
-                    bom = self.env['mrp.bom']._bom_find(line.product_id)[line.product_id]
-                    if bom and line._get_short_components(bom, line.product_id, line.product_uom_qty or 1.0):
-                        has_issues = True
-                        break
-            order.has_mto_stock_issues = has_issues
+    def action_confirm(self):
+        """Override to check MTO component stock before confirming."""
+        if self.env.context.get('skip_mto_stock_check'):
+            return super().action_confirm()
 
-    def action_check_mto_stock(self):
-        """Open MTO stock wizard for all MTO lines with component shortages."""
+        for order in self:
+            wizard_data = order._check_mto_stock_issues()
+            if wizard_data:
+                # Open the wizard instead of confirming
+                return wizard_data
+
+        return super().action_confirm()
+
+    def _check_mto_stock_issues(self):
+        """Check all order lines for MTO products with component shortages.
+        Returns a wizard action dict if issues found, else False.
+        """
         self.ensure_one()
         wizard_lines = []
-        wizard_alternatives = []
+        first_mto_product = False
+        first_qty = 1.0
 
         for line in self.order_line:
             if not line.product_id or line.display_type:
@@ -70,6 +73,10 @@ class SaleOrder(models.Model):
             if not short_components:
                 continue
 
+            if not first_mto_product:
+                first_mto_product = product
+                first_qty = qty
+
             for comp in short_components:
                 wizard_lines.append((0, 0, {
                     'component_id': comp['component'].id,
@@ -77,34 +84,30 @@ class SaleOrder(models.Model):
                     'available_qty': comp['available'],
                 }))
 
-            alternatives = line._find_alternative_variants(product, bom, qty)
-            for alt in alternatives:
-                wizard_alternatives.append((0, 0, {
-                    'product_id': alt.id,
-                }))
-
         if not wizard_lines:
-            return {'type': 'ir.actions.act_window_close'}
+            return False
 
-        # Use the first MTO product with issues as the primary one
-        first_mto_product = False
-        first_qty = 1.0
+        # Find alternative variants
+        alternatives = []
         for line in self.order_line:
             if not line.product_id or line.display_type:
                 continue
-            if line._is_mto_product(line.product_id):
-                bom = self.env['mrp.bom']._bom_find(line.product_id)[line.product_id]
-                if bom and line._get_short_components(bom, line.product_id, line.product_uom_qty or 1.0):
-                    first_mto_product = line.product_id
-                    first_qty = line.product_uom_qty or 1.0
-                    break
+            product = line.product_id
+            if not line._is_mto_product(product):
+                continue
+            bom = self.env['mrp.bom']._bom_find(product)[product]
+            if not bom:
+                continue
+            alts = line._find_alternative_variants(product, bom, line.product_uom_qty or 1.0)
+            for alt in alts:
+                alternatives.append((0, 0, {'product_id': alt.id}))
 
         wizard = self.env['sale.mto.stock.wizard'].create({
             'sale_order_id': self.id,
             'sale_line_product_id': first_mto_product.id,
             'sale_line_qty': first_qty,
             'line_ids': wizard_lines,
-            'alternative_ids': wizard_alternatives,
+            'alternative_ids': alternatives,
         })
 
         return {
@@ -236,9 +239,6 @@ class SaleOrderLine(models.Model):
                 )
                 ref = (" [%s]" % alt.default_code) if alt.default_code else ""
                 lines.append("  - %s%s (%s)" % (alt.display_name, ref, variant_vals))
-            lines.append(
-                "\nSave the order and click 'Check MTO Stock' to swap to an alternative."
-            )
         else:
             lines.append(
                 "\nNo alternative variants with sufficient component stock were found."
