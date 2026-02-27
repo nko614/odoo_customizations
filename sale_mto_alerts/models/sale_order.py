@@ -86,7 +86,7 @@ class SaleOrderLine(models.Model):
                 'name': 'MTO Component Stock Alert',
                 'res_model': 'sale.mto.stock.wizard',
                 'res_id': wizard.id,
-                'view_mode': 'form',
+                'views': [[False, 'form']],
                 'target': 'new',
             }
         }
