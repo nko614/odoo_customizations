@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="sale_order_form_mto_button" model="ir.ui.view">
-        <field name="name">sale.order.form.mto.button</field>
+    <record id="sale_order_form_customer_alert" model="ir.ui.view">
+        <field name="name">sale.order.form.customer.alert</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
