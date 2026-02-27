@@ -10,43 +10,51 @@ patch(SaleOrderLineProductField.prototype, {
         this.actionService = useService("action");
     },
 
-    async _onProductUpdate() {
-        await super._onProductUpdate();
-        await this._checkMtoStock();
+    _onProductUpdate() {
+        super._onProductUpdate();
+        this._checkMtoStock();
     },
 
     async _checkMtoStock() {
         const record = this.props.record;
         const saleOrder = record.model.root;
-        const productId = record.data.product_id && record.data.product_id[0];
-        if (!productId) {
+        const productData = record.data.product_id;
+        if (!productData || !productData.id) {
             return;
         }
-
+        const productId = productData.id;
         const qty = record.data.product_uom_qty || 1.0;
-        const companyId = saleOrder.data.company_id && saleOrder.data.company_id[0];
+        const companyData = saleOrder.data.company_id;
+        const companyId = companyData ? companyData.id : false;
 
-        const result = await this.orm.call(
-            "sale.order.line",
-            "check_mto_component_stock",
-            [],
-            {
-                product_id: productId,
-                qty: qty,
-                company_id: companyId || false,
-            }
-        );
+        let result;
+        try {
+            result = await this.orm.call(
+                "sale.order.line",
+                "check_mto_component_stock",
+                [],
+                {
+                    product_id: productId,
+                    qty: qty,
+                    company_id: companyId,
+                }
+            );
+        } catch (e) {
+            console.error("MTO stock check failed:", e);
+            return;
+        }
 
         if (result && result.action) {
             this.actionService.doAction(result.action, {
                 onClose: async (closeInfo) => {
                     if (closeInfo && closeInfo.productId) {
-                        // User clicked "Use This Variant" - swap product on the line
                         await record.update({
-                            product_id: [closeInfo.productId, closeInfo.productName],
+                            product_id: {
+                                id: closeInfo.productId,
+                                display_name: closeInfo.productName,
+                            },
                         });
                     }
-                    // Otherwise user clicked "Continue Anyway" or closed - do nothing
                 },
             });
         }
