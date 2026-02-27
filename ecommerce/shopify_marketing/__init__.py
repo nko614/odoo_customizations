@@ -1,6 +1,10 @@
+import logging
+
 from odoo.addons.ecommerce_shopify import utils_graphql
 
 from . import models
+
+_logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Patch 1: Extend the Shopify GraphQL order query to include UTM attribution
@@ -42,6 +46,11 @@ def _patched_shopify_prepare_order_structure(order_node):
     ready = journey.get('ready', False)
     utm_data = {'ready': ready}
 
+    _logger.info(
+        "shopify_marketing: order %s customerJourneySummary raw data: %s",
+        order.get('id'), journey,
+    )
+
     if ready:
         first_visit = journey.get('firstVisit') or {}
         utm_params = first_visit.get('utmParameters') or {}
@@ -50,6 +59,8 @@ def _patched_shopify_prepare_order_structure(order_node):
             'medium': utm_params.get('medium') or '',
             'campaign': utm_params.get('campaign') or '',
         })
+
+    _logger.info("shopify_marketing: order %s utm_data: %s", order.get('id'), utm_data)
 
     order['utm_data'] = utm_data
     return order

@@ -1,4 +1,8 @@
+import logging
+
 from odoo import models
+
+_logger = logging.getLogger(__name__)
 
 
 class EcommerceAccount(models.Model):
@@ -11,6 +15,7 @@ class EcommerceAccount(models.Model):
             return order_vals
 
         utm_data = order_data.get('utm_data') or {}
+        _logger.info("shopify_marketing _prepare_order_values: utm_data=%s", utm_data)
         if not utm_data.get('ready'):
             return order_vals
 
